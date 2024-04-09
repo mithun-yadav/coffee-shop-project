@@ -1,0 +1,17 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+    font-family: "Roboto", sans-serif;
+}
+
+.top-header{
+    display: flex;
+    
+}
+
+.top-header div{
+    flex: 1;
+    text-align: center;
+    padding:2rem 0;
+}
