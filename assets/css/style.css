@@ -5,13 +5,93 @@
     font-family: "Roboto", sans-serif;
 }
 
-.top-header{
-    display: flex;
-    
+:root{
+    --tabChangeAnime: 50%;
 }
 
-.top-header div{
+
+header{
+    position: fixed; 
+    top:0; 
+    width: 100%;
+    background-color: #fff;
+}
+
+.top-header{
+    display: flex;
+    position: relative;
+    height: 15vh;
+}
+
+.top-header::after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    border-radius: 3px;
+    background-color: #008DDA;
+    width: 50%;
+    right: var(--tabChangeAnime);
+    transition-duration: 300ms;
+}
+
+.top-header div {
     flex: 1;
     text-align: center;
-    padding:2rem 0;
+        cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main{
+    margin: 15vh 0;
+}
+
+main section{
+    width: 100%;
+}
+
+.mainSectionImg{
+    width: 100%;
+}
+
+
+.footer-icons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.footer-icon{
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.footer-icon span{
+    display: inline-block;
+    width: 100%;
+    color:#000;
+}
+
+
+footer{
+    position: fixed; 
+    bottom:0; 
+    width: 100%;
+    background-color: #fff;
+    height: 15vh;
+}
+
+.footer-icon input[type="checkbox"]{
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+
+
+.footer-icon input[type="checkbox"]:focus ~ span{
+    color: #3700ff;
 }
