@@ -109,4 +109,35 @@ menuContainerUlLi.forEach((item)=>{
 /*::::::::::::::::::::::::::::::::menu Section end:::::::::::::::::::::::::::::::::::::::*/
 
 
+/*::::::::::::::::::::::::::::::::Product Details Section start:::::::::::::::::::::::::::::::::::::::*/
+
+const productDetailsClose = document.querySelector(".DetailsBackBtn");
+const productDetails = document.querySelector("#productDetails");
+const productImage = document.querySelector(".productImage");
+
+
+productDetailsClose.addEventListener("click",()=>{
+    productDetails.style.display="none";
+});
+
+
+const menuContainerImg = document.querySelectorAll(".menuContainer-img");
+let detailsImage = undefined
+menuContainerImg.forEach((item)=>{
+
+    item.addEventListener("click",function(){
+
+
+        detailsImage = this.children[0].getAttribute('src');
+        productImage.setAttribute("src",detailsImage);
+
+        productDetails.style.display="block";
+    })
+});
+
+
+/*::::::::::::::::::::::::::::::::Product Details Section end:::::::::::::::::::::::::::::::::::::::*/
+
+
+
 

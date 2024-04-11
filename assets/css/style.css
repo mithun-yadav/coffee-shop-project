@@ -5,8 +5,17 @@
     font-family: "Roboto", sans-serif;
 }
 
+/* body{
+    position: relative;
+} */
+
+body::-webkit-scrollbar{
+    display: none;
+}
+
 :root{
     --tabChangeAnime: 50%;
+    --primaryColor: #008DDA;
 }
 
 /*::::::::::::::::::::::::::::::::Header Section start:::::::::::::::::::::::::::::::::::::::*/
@@ -21,7 +30,7 @@
 .top-header{
     display: flex;
     position: relative;
-    height: 15vh;
+    height: 80px;
 }
 
 .top-header::after{
@@ -30,7 +39,7 @@
     bottom: 0;
     height: 2px;
     border-radius: 3px;
-    background-color: #008DDA;
+    background-color: var(--primaryColor);
     width: 50%;
     right: var(--tabChangeAnime);
     transition-duration: 300ms;
@@ -59,7 +68,7 @@ main section{
 }
 
 #home{
-    margin: 15vh 0;
+    margin: 80px 0;
 }
 
 
@@ -153,7 +162,7 @@ footer{
     bottom:0; 
     width: 100%;
     background-color: #fff;
-    height: 15vh;
+    height: 80px;
 }
 
 .footer-icon input[type="checkbox"]{
@@ -167,19 +176,66 @@ footer{
     color: #3700ff;
 }
 
-.homePage{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
+ /*::::::::::::::::::::::::::::::::Footer Section end:::::::::::::::::::::::::::::::::::::::*/
 
-.homePage section{
-    height: 70vh;
-}
 
-.homePage section img{
-    height: 100%;
-    object-fit: cover;
-}
+ /*::::::::::::::::::::::::::::::::Home Section start:::::::::::::::::::::::::::::::::::::::*/
+ 
+ .homePage{
+     display: flex;
+     flex-direction: column;
+     gap: 1rem;
+    }
+    
+    .homePage section {
+        height: calc(100vh - 160px);
+    }
+    
+    .homePage section img{
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    /*::::::::::::::::::::::::::::::::Home Section end:::::::::::::::::::::::::::::::::::::::*/
 
-    /*::::::::::::::::::::::::::::::::Footer Section start:::::::::::::::::::::::::::::::::::::::*/
+
+
+    /*::::::::::::::::::::::::::::::::Product Details Section end:::::::::::::::::::::::::::::::::::::::*/
+
+    #productDetails{
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background-color: #fff;
+    }
+
+    .DetailsBackBtn {
+        padding: 0px 10px;
+        background-color: var(--primaryColor);
+        color: #fff;
+        height: 7%;
+        display: flex;
+        align-items: center;
+    }
+
+    .productImageDiv {
+        height: 85%;
+    }
+    .productImageDiv img{
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+    .productDesc {
+        height: 15%;
+        display: flex;
+        align-items: center;
+        background: steelblue;
+        justify-content: center;
+        color:#fff;
+    }
+    .productDetailsDiv{
+        height: 93%;
+    }
+
+    /*::::::::::::::::::::::::::::::::Product Details Section start:::::::::::::::::::::::::::::::::::::::*/
