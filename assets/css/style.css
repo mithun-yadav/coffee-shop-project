@@ -74,7 +74,7 @@ main section{
 .scroll-image img{
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .scroll-menu{
@@ -107,13 +107,11 @@ main section{
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* display: none; */
 }
 
 .menuContainer-ul {
     display: flex;
     gap: 2rem;
-    /* padding-left: 37px; */
     padding: 0;
     padding-left: 25px;
     padding-bottom: 1rem;

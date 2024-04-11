@@ -56,11 +56,13 @@ footerIconDivs.forEach((item)=>{
 
 const scrollImage = document.querySelectorAll(".scroll-image");
 const menuimgDiv = document.querySelectorAll(".menuimgDiv");
+const menuContainerUlLi = document.querySelectorAll(".menuContainer-ul li");
+const menuContainer = document.querySelectorAll(".menuContainer");
 
 
 let menuIds = undefined;
 
-scrollImage.forEach((item)=>{
+scrollImage.forEach((item,index)=>{
 
     item.addEventListener("click",(e)=>{
 
@@ -68,13 +70,17 @@ scrollImage.forEach((item)=>{
             item.style.display="none";
         });
 
-
         menuIds = item.dataset.menuimg;
         let singleMenuDiv = document.querySelector(`#${menuIds}`);
         singleMenuDiv.style.display="block"
 
+        menuContainer.forEach((item)=>{
+            item.style.display="none";
+        });
+        document.querySelector(`.menuContainer${index+1}1`).style.display="grid";
+        console.log(`#menuContainer${index+1}`)
 
-        
+
     });
 
 });
@@ -83,8 +89,6 @@ scrollImage.forEach((item)=>{
 
 
 
-const menuContainerUlLi = document.querySelectorAll(".menuContainer-ul li");
-const menuContainer = document.querySelectorAll(".menuContainer");
 
 menuContainerUlLi.forEach((item)=>{
     item.addEventListener("click",()=>{
@@ -96,8 +100,9 @@ menuContainerUlLi.forEach((item)=>{
         let menuContainerClass = item.dataset.menulistcount;
         
         let selectedMenuContainer = document.querySelector(`#${menuContainerClass}`);
-        selectedMenuContainer.style.display="grid"
+        selectedMenuContainer.style.display="grid";
 
+        console.log(menuContainerClass)
     })
 })
 
