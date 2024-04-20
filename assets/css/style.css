@@ -18,6 +18,7 @@ body::-webkit-scrollbar{
     --primaryColor: #008DDA;
 }
 
+
 /*::::::::::::::::::::::::::::::::Header Section start:::::::::::::::::::::::::::::::::::::::*/
 
 #header-section{
@@ -176,6 +177,10 @@ footer{
     color: #3700ff;
 }
 
+.footerIconColor{
+    color: #3700ff;
+}
+
  /*::::::::::::::::::::::::::::::::Footer Section end:::::::::::::::::::::::::::::::::::::::*/
 
 
@@ -209,7 +214,7 @@ footer{
         background-color: #fff;
     }
 
-    .DetailsBackBtn {
+    .detailsBackBtn {
         padding: 0px 10px;
         background-color: var(--primaryColor);
         color: #fff;
@@ -239,3 +244,104 @@ footer{
     }
 
     /*::::::::::::::::::::::::::::::::Product Details Section start:::::::::::::::::::::::::::::::::::::::*/
+
+
+
+
+
+
+    /*::::::::::::::::::::::::::::::::contentProduct Details Section start:::::::::::::::::::::::::::::::::::::::*/
+
+    #contentDetails{
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background-color: #fff;
+    }
+
+    .contentDetailsBackBtn {
+        padding: 0px 10px;
+        background-color: var(--primaryColor);
+        color: #fff;
+        height: 7%;
+        display: flex;
+        align-items: center;
+    }
+
+    .contentProductImageDiv img{
+        object-fit: cover;
+        width: 100%;
+    }
+
+
+    .contentProductDetailsDiv {
+        overflow: auto;
+        height: 93%;
+        padding: 0 10px;
+    }
+    .contentProductDesc{
+        padding: 1rem 0;
+    }
+
+    /*::::::::::::::::::::::::::::::::contentProduct Details Section end:::::::::::::::::::::::::::::::::::::::*/
+
+
+
+
+
+
+
+
+    /*::::::::::::::::::::::::::::::::Shops location Section start:::::::::::::::::::::::::::::::::::::::*/
+
+    #shop {
+        padding: 0 10px;
+        margin-bottom: 80px;
+    }
+
+    .addreses-phoneNo-div{
+        border-top: 1px solid brown;
+        padding: 10px 0 2rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .addreses-phoneNo-div h3{
+        color:brown;
+    }
+
+    .addreses-phoneNo-div p{
+        color:grey;
+    }
+
+    .mobileNo a{
+        text-decoration: none;
+        background-color: var(--primaryColor);
+        color:#fff;
+        padding: 10px;
+    }
+
+    .shop-location{
+        color:var(--primaryColor);
+        text-align: center;
+        font-size: 2rem;
+    }
+
+    .addreses-phoneNo{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .addreses-phoneNo div{
+        flex: 1;
+    }
+
+
+    .page-heading{
+        padding: 1rem 0;
+    }
+
+
+    /*::::::::::::::::::::::::::::::::Shop location Section end:::::::::::::::::::::::::::::::::::::::*/

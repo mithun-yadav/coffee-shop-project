@@ -33,9 +33,10 @@ topHeader.addEventListener("click",(e)=>{
 
 /*:::::::::::::::::::::::::::::Footer page start:::::::::::::::::::::::::::::::::::*/
 
+console.log(footerIconDivs)
 footerIconDivs.forEach((item)=>{
+
     item.addEventListener("click",(e)=>{
-        
         impFourSections.forEach((item)=>{
             item.style.display="none";
         });
@@ -111,7 +112,7 @@ menuContainerUlLi.forEach((item)=>{
 
 /*::::::::::::::::::::::::::::::::Product Details Section start:::::::::::::::::::::::::::::::::::::::*/
 
-const productDetailsClose = document.querySelector(".DetailsBackBtn");
+const productDetailsClose = document.querySelector(".detailsBackBtn");
 const productDetails = document.querySelector("#productDetails");
 const productImage = document.querySelector(".productImage");
 
@@ -138,6 +139,34 @@ menuContainerImg.forEach((item)=>{
 
 /*::::::::::::::::::::::::::::::::Product Details Section end:::::::::::::::::::::::::::::::::::::::*/
 
+
+
+
+/*::::::::::::::::::::::::::::::::contentProduct Details Section start:::::::::::::::::::::::::::::::::::::::*/
+
+const contentDetails = document.querySelector("#contentDetails");
+const contentDetailsBackBtn = document.querySelector(".contentDetailsBackBtn");
+const contentdetailsSection = document.querySelectorAll(".contentdetailsSection");
+const contentProductImage = document.querySelector(".contentProductImage");
+
+contentdetailsSection.forEach((item)=>{
+    item.addEventListener("click",()=>{
+
+        detailsImage = item.children[0].getAttribute('src');
+        contentProductImage.setAttribute("src",detailsImage);
+
+        contentDetails.style.display="block";
+    })
+})
+
+
+
+contentDetailsBackBtn.addEventListener("click",()=>{
+    contentDetails.style.display="none";
+});
+
+
+/*::::::::::::::::::::::::::::::::contentProduct Details Section end:::::::::::::::::::::::::::::::::::::::*/
 
 
 
