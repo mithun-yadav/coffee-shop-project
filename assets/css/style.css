@@ -193,7 +193,7 @@ footer{
     }
     
     .homePage section {
-        height: calc(100vh - 160px);
+        height: calc(100vh - 135px);
     }
     
     .homePage section img{
@@ -323,9 +323,12 @@ footer{
     }
 
     .shop-location{
-        color:var(--primaryColor);
         text-align: center;
         font-size: 2rem;
+    }
+
+    .shop-location a{
+        color:var(--primaryColor)!important;
     }
 
     .addreses-phoneNo{
