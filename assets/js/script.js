@@ -78,6 +78,7 @@ document.addEventListener(
   "DOMContentLoaded",
   fetchData("getProductDetail", "news").then((data) => {
     const { return_data } = data;
+    console.log(return_data)
     const imageArray = return_data[0].product_group;
 
     newsLoaded = true;
@@ -90,6 +91,11 @@ document.addEventListener(
                     <img src="${
                       item.icon_filename_url
                     }" alt="img" class="mainSectionImg">
+
+                    <div class="detailsImgDesc">
+                      <p>${item.product_item[0].description_en}</p>
+                      <img src="${item.product_item[0].icon_filename_url}" alt="ll">
+                    </div>  
                 </section>
             `;
       newsSection.insertAdjacentHTML("beforeend", newsHtml);
@@ -115,7 +121,10 @@ fetchData("getProductDetail", "promotion").then((data) => {
                   item.icon_filename_url
                 }" alt="img" class="mainSectionImg">
 
-                <p style="display:none">${item.description_en}</p>
+                <div class="detailsImgDesc">
+                      <p>${item.product_item[0].description_en}</p>
+                      <img src="${item.product_item[0].icon_filename_url}" alt="ll">
+                </div> 
             </section>
         `;
     promotionsSection.insertAdjacentHTML("beforeend", newsHtml);
@@ -160,7 +169,7 @@ const allMenusContainer = document.querySelector(".allMenusContainer");
 let menuIds = undefined;
 
 fetchData("getProductDetail", "product").then((data) => {
-  console.log(data);
+  // console.log(data);
   const { return_data } = data;
 
   return_data.forEach((itemMain, indexMain) => {
@@ -196,10 +205,11 @@ fetchData("getProductDetail", "product").then((data) => {
           return (
             `<div class="menuContainer" id="menuContainer${indexMain + 1}${index + 1}">` +
             item1.product_item
-              .map((item, index) => {
+              .map((item, index) => { 
                 return `
                           <div class="menuContainer-img">
                               <img src="${item.icon_filename_url}" alt="img">
+                              <p class="beverage-name">${item.name_en}</p>
                           </div>
                           `;
               })
@@ -237,7 +247,6 @@ const menuContainer = document.querySelectorAll(".menuContainer");
 
 menuContainerUlLi.forEach((item) => {
   item.addEventListener("click", (e) => {
-    console.log("hhhhhhhh",e);
 
     
     menuContainer.forEach((item) => {
@@ -245,7 +254,6 @@ menuContainerUlLi.forEach((item) => {
     });
 
     let menuContainerClass = item.dataset.menulistcount;
-    console.log(menuContainerClass)
 
     let selectedMenuContainer = document.querySelector(
       `#${menuContainerClass}`
@@ -268,7 +276,6 @@ menuContainerUlLi.forEach((item) => {
         });
 
         menuIds = item.dataset.menuimg;
-        console.log(menuIds);
         let singleMenuDiv = document.querySelector(`#${menuIds}`);
         singleMenuDiv.style.display = "block";
 
@@ -281,8 +288,6 @@ menuContainerUlLi.forEach((item) => {
 
         let magicValue = menuContainerFirst.children[1].children[0];
         magicValue.style.display="grid";
-
-        console.log(document.querySelector(`.menuContainer${index + 1}1`));
       });
     });
 
@@ -296,6 +301,7 @@ menuContainerUlLi.forEach((item) => {
 
     const menuContainerImg = document.querySelectorAll(".menuContainer-img");
     let detailsImage = undefined;
+    let detailsText = undefined;
     menuContainerImg.forEach((item) => {
       item.addEventListener("click", function () {
         detailsImage = this.children[0].getAttribute("src");
@@ -328,7 +334,11 @@ function contentProductFunc() {
 
   contentdetailsSection.forEach((item) => {
     item.addEventListener("click", () => {
-      detailsImage = item.children[0].getAttribute("src");
+      console.dir(item)
+      detailsText = item.children[1].children[0].innerText;
+      contentProductDescPara.innerText = detailsText;
+      console.log(detailsText)
+      detailsImage = item.children[1].children[1].getAttribute("src");
       contentProductImage.setAttribute("src", detailsImage);
       contentDetails.style.display = "block";
     });

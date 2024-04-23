@@ -107,15 +107,16 @@ main section{
     grid-template-columns: repeat(3,1fr);
     gap: 5px;
 }
-
-.menuContainer-img{
-    max-width: 120px;
-    min-height: 120px;
+.beverage-name{
+    text-align: center;
 }
 
-.menuContainer-img img{
+.menuContainer-img {
+    max-width: 121px;
+}
+
+.menuContainer-img img {
     width: 100%;
-    height: 100%;
     object-fit: cover;
 }
 
@@ -131,6 +132,9 @@ main section{
     padding-bottom: 80px;
 }
 
+.detailsImgDesc{
+    display: none;
+}
 
 /*::::::::::::::::::::::::::::::::Menu Section end:::::::::::::::::::::::::::::::::::::::*/
 
