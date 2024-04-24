@@ -101,14 +101,15 @@ main section{
 
 
 /*::::::::::::::::::::::::::::::::Menu Section start:::::::::::::::::::::::::::::::::::::::*/
-
-.menuContainer{
+.menuContainer {
     display: grid;
     grid-template-columns: repeat(3,1fr);
     gap: 5px;
+    padding: 10px;
 }
-.beverage-name{
+.beverage-name {
     text-align: center;
+    font-size: 14px;
 }
 
 .menuContainer-img {
@@ -133,6 +134,9 @@ main section{
 }
 
 .detailsImgDesc{
+    display: none;
+}
+.beverage-description{
     display: none;
 }
 
@@ -243,7 +247,7 @@ footer{
         height: 15%;
         display: flex;
         align-items: center;
-        background: steelblue;
+        background: var(--primaryColor);
         justify-content: center;
         color:#fff;
     }

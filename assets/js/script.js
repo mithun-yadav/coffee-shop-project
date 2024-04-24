@@ -1,4 +1,23 @@
-// Function to fetch data from the API
+const footerIcon3 = document.querySelector(".footer-icon.fi3");
+let languageChange1 = true;
+
+reRenderDocs(languageChange1);
+
+footerIcon3.addEventListener("click",()=>{
+  //languageChange1 = !languageChange1
+  console.log(languageChange1);
+
+  reRenderDocs(languageChange1);
+
+});
+
+
+function reRenderDocs(languageChange){
+  //languageChange = !languageChange
+  //console.log(languageChange,"iiiiiii")
+
+
+  // Function to fetch data from the API
 async function fetchData(diffEndPoints, diffType) {
   //getProductDetail
   const url = `https://app.doichaangcorporate.com/app/api/${diffEndPoints}`; // Replace this with your API endpoint
@@ -78,7 +97,6 @@ document.addEventListener(
   "DOMContentLoaded",
   fetchData("getProductDetail", "news").then((data) => {
     const { return_data } = data;
-    console.log(return_data)
     const imageArray = return_data[0].product_group;
 
     newsLoaded = true;
@@ -93,13 +111,16 @@ document.addEventListener(
                     }" alt="img" class="mainSectionImg">
 
                     <div class="detailsImgDesc">
-                      <p>${item.product_item[0].description_en}</p>
-                      <img src="${item.product_item[0].icon_filename_url}" alt="ll">
+                      <p>${languageChange ? (item.product_item[0].description_en) : (item.product_item[0].description_th)}</p>
+                      <img src="${
+                        item.product_item[0].icon_filename_url
+                      }" alt="ll">
                     </div>  
                 </section>
             `;
       newsSection.insertAdjacentHTML("beforeend", newsHtml);
     });
+    contentProductFunc();
   })
 );
 
@@ -122,8 +143,10 @@ fetchData("getProductDetail", "promotion").then((data) => {
                 }" alt="img" class="mainSectionImg">
 
                 <div class="detailsImgDesc">
-                      <p>${item.product_item[0].description_en}</p>
-                      <img src="${item.product_item[0].icon_filename_url}" alt="ll">
+                      <p>${(languageChange ? item.product_item[0].description_en : item.product_item[0].description_th)}</p>
+                      <img src="${
+                        item.product_item[0].icon_filename_url
+                      }" alt="ll">
                 </div> 
             </section>
         `;
@@ -158,7 +181,6 @@ footerIconDivs.forEach((item) => {
     },
     true
   );
-
 });
 /*:::::::::::::::::::::::::::::Footer page end:::::::::::::::::::::::::::::::::::*/
 
@@ -168,9 +190,11 @@ const allMenusContainer = document.querySelector(".allMenusContainer");
 
 let menuIds = undefined;
 
+
 fetchData("getProductDetail", "product").then((data) => {
   // console.log(data);
   const { return_data } = data;
+  console.log(return_data);
 
   return_data.forEach((itemMain, indexMain) => {
     let scrollElement = `
@@ -191,9 +215,9 @@ fetchData("getProductDetail", "product").then((data) => {
         <ul class="menuContainer-ul">` +
       itemMain.product_group
         .map((item, index) => {
-          return `<li data-menulistcount='menuContainer${indexMain + 1}${index + 1}'>${
-            item.name_en
-          }</li>`;
+          return `<li data-menulistcount='menuContainer${indexMain + 1}${
+            index + 1
+          }'>${(languageChange ? item.name_en : item.name_th)}</li>`;
         })
         .join(" ") +
       `</ul>
@@ -203,13 +227,16 @@ fetchData("getProductDetail", "product").then((data) => {
       itemMain.product_group
         .map((item1, index) => {
           return (
-            `<div class="menuContainer" id="menuContainer${indexMain + 1}${index + 1}">` +
+            `<div class="menuContainer" id="menuContainer${indexMain + 1}${
+              index + 1
+            }">` +
             item1.product_item
-              .map((item, index) => { 
+              .map((item, index) => {
                 return `
                           <div class="menuContainer-img">
                               <img src="${item.icon_filename_url}" alt="img">
-                              <p class="beverage-name">${item.name_en}</p>
+                              <p class="beverage-name">${(languageChange ? item.name_en : item.name_th)}</p>
+                              <p class="beverage-description">${(languageChange ? item.description_en : item.description_th)}</p>
                           </div>
                           `;
               })
@@ -234,38 +261,33 @@ fetchData("getProductDetail", "product").then((data) => {
 
     //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
 
-    const menuContainerSelect = document.querySelectorAll("#menuContainer1 .menuContainer");
-    menuContainerSelect.forEach((item)=>{
-      item.style.display="none";
+    const menuContainerSelect = document.querySelectorAll(
+      "#menuContainer1 .menuContainer"
+    );
+    menuContainerSelect.forEach((item) => {
+      item.style.display = "none";
     });
-    menuContainerSelect[0].style.display="grid";
+    menuContainerSelect[0].style.display = "grid";
 
     //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
 
-const menuContainerUlLi = document.querySelectorAll(".menuContainer-ul li");
-const menuContainer = document.querySelectorAll(".menuContainer");
+    const menuContainerUlLi = document.querySelectorAll(".menuContainer-ul li");
+    const menuContainer = document.querySelectorAll(".menuContainer");
 
-menuContainerUlLi.forEach((item) => {
-  item.addEventListener("click", (e) => {
+    menuContainerUlLi.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        menuContainer.forEach((item) => {
+          item.style.display = "none";
+        });
 
-    
-    menuContainer.forEach((item) => {
-      item.style.display = "none";
+        let menuContainerClass = item.dataset.menulistcount;
+
+        let selectedMenuContainer = document.querySelector(
+          `#${menuContainerClass}`
+        );
+        selectedMenuContainer.style.display = "grid";
+      });
     });
-
-    let menuContainerClass = item.dataset.menulistcount;
-
-    let selectedMenuContainer = document.querySelector(
-      `#${menuContainerClass}`
-    );
-    selectedMenuContainer.style.display = "grid";
-
-
-    
-  });
-
-});
-
 
     //:::::::::::::::::::::::::::::=========|||||||||||||||||===========:::::::::::::::::::::::://
 
@@ -279,37 +301,50 @@ menuContainerUlLi.forEach((item) => {
         let singleMenuDiv = document.querySelector(`#${menuIds}`);
         singleMenuDiv.style.display = "block";
 
-        const menuContainerFirst = document.querySelector(`#${menuIds}`); 
+        const menuContainerFirst = document.querySelector(`#${menuIds}`);
         console.dir(menuContainerFirst.children[1]);
 
-        [...menuContainerFirst.children[1].children].forEach((item)=>{
-          item.style.display="none";
-        })
+        [...menuContainerFirst.children[1].children].forEach((item) => {
+          item.style.display = "none";
+        });
 
         let magicValue = menuContainerFirst.children[1].children[0];
-        magicValue.style.display="grid";
+        magicValue.style.display = "grid";
       });
     });
 
-    const productDetailsClose = document.querySelector(".detailsBackBtn");
-    const productDetails = document.querySelector("#productDetails");
-    const productImage = document.querySelector(".productImage");
+    /*=========================|||||||||||||||||||=========================== */
+  const menuContainerImg = document.querySelectorAll(".menuContainer-img");
+  const contentProductImage = document.querySelector(".contentProductImage");
+  const contentDetails = document.querySelector("#contentDetails");
+ 
+  const contentDetailsBackBtn = document.querySelector(
+    ".contentDetailsBackBtn"
+  );
+  const contentProductDescPara = document.querySelector(
+    ".contentProductDesc p"
+  );
 
-    productDetailsClose.addEventListener("click", () => {
-      productDetails.style.display = "none";
-    });
-
-    const menuContainerImg = document.querySelectorAll(".menuContainer-img");
     let detailsImage = undefined;
     let detailsText = undefined;
     menuContainerImg.forEach((item) => {
       item.addEventListener("click", function () {
         detailsImage = this.children[0].getAttribute("src");
-        productImage.setAttribute("src", detailsImage);
+        console.dir(item.children[2].innerText);
+        // productImage.setAttribute("src", detailsImage);
 
-        productDetails.style.display = "block";
+        contentProductDescPara.innerText = item.children[2].innerText;
+        contentProductImage.setAttribute("src", detailsImage);
+        contentDetails.style.display = "block";
+
+        contentDetailsBackBtn.addEventListener("click", () => {
+          contentDetails.style.display = "none";
+        });
+        // productDetails.style.display = "block";
       });
     });
+
+    /*=========================|||||||||||||||||||=========================== */
   });
 });
 
@@ -320,24 +355,23 @@ menuContainerUlLi.forEach((item) => {
 /*::::::::::::::::::::::::::::::::contentProduct Details Section start:::::::::::::::::::::::::::::::::::::::*/
 
 function contentProductFunc() {
+  const contentProductImage = document.querySelector(".contentProductImage");
   const contentDetails = document.querySelector("#contentDetails");
-  const contentProductDescPara = document.querySelector(
-    ".contentProductDesc p"
+  const contentdetailsSection = document.querySelectorAll(
+    ".contentdetailsSection"
   );
   const contentDetailsBackBtn = document.querySelector(
     ".contentDetailsBackBtn"
   );
-  const contentdetailsSection = document.querySelectorAll(
-    ".contentdetailsSection"
+  const contentProductDescPara = document.querySelector(
+    ".contentProductDesc p"
   );
-  const contentProductImage = document.querySelector(".contentProductImage");
+
 
   contentdetailsSection.forEach((item) => {
     item.addEventListener("click", () => {
-      console.dir(item)
       detailsText = item.children[1].children[0].innerText;
       contentProductDescPara.innerText = detailsText;
-      console.log(detailsText)
       detailsImage = item.children[1].children[1].getAttribute("src");
       contentProductImage.setAttribute("src", detailsImage);
       contentDetails.style.display = "block";
@@ -355,11 +389,12 @@ function contentProductFunc() {
 const shop = document.querySelector("#shop");
 fetchData("getShopAddress", "promotion").then((data) => {
   const { return_data } = data;
+  console.log(return_data);
   return_data.forEach((item, index) => {
     const newsHtml = `
             <div class="addreses-phoneNo-div first-info-div">
-            <h3>${item.name_en}</h3>
-            <p>${item.full_address_en}</p>
+            <h3>${(languageChange ? item.name_en : item.name_th)}</h3>
+            <p>${(languageChange ? item.full_address_en : item.full_address_th)}</p>
             <div class="addreses-phoneNo">
                 <div class="mobileNo"><a href="tel:${item.tel_no}">${item.tel_no}</a></div>
                 <div class="shop-location"><a href="https://www.google.com/maps?q=${item.lat},${item.lon}" target="_blank"><i class="fa-solid fa-location-dot"></i></a></div>
@@ -372,3 +407,7 @@ fetchData("getShopAddress", "promotion").then((data) => {
   contentProductFunc();
 });
 /*::::::::::::::::::::::::::::::::Shop Section end:::::::::::::::::::::::::::::::::::::::*/
+
+
+
+}
