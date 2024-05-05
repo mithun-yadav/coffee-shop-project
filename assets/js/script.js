@@ -1,4 +1,4 @@
-let languageChange1 = true;
+//let languageChange1 = true;
 
 reRenderDocs(languageChange1=true);
 
@@ -182,6 +182,13 @@ function reRenderDocs(languageChange) {
 
   /*:::::::::::::::::::::::::::::Footer page start:::::::::::::::::::::::::::::::::::*/
 
+  console.log(footerIconDivs[0].childNodes)
+  footerIconDivs[0].childNodes.forEach((item,index)=>{
+    item.style.color="#008DDA";
+  });
+
+
+
   footerIconDivs.forEach((item) => {
     item.addEventListener(
       "click",
@@ -192,7 +199,6 @@ function reRenderDocs(languageChange) {
             item.style.color="#000";
           });
         })
-
 
         item.childNodes.forEach((item,index)=>{
           item.style.color="#008DDA";
