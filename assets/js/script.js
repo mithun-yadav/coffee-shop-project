@@ -1,14 +1,25 @@
 let languageChange1 = true;
 
-// const footerIcon3 = document.querySelector(".footer-icon.fi3");
-// footerIcon3.addEventListener("click", () => {
-//   reRenderDocs(languageChange1);
-// });
+reRenderDocs(languageChange1=true);
 
-
-reRenderDocs(languageChange1);
+/*::::::::::::::::::::::::::::::::Profile Section start:::::::::::::::::::::::::::::::::::::::*/
+  const langListLi = document.querySelectorAll(".lang-list li");
+  console.log(langListLi)
+  langListLi.forEach((item,index)=>{
+    item.addEventListener("click",()=>{
+      console.log(item.textContent)
+      if(item.textContent === "English"){
+        console.log("mmmm");
+      }
+      else{
+        console.log("yyyy");
+      }
+    })
+  });
+  /*::::::::::::::::::::::::::::::::Profile Section end:::::::::::::::::::::::::::::::::::::::*/
 
 function reRenderDocs(languageChange) {
+  //console.log(languageChange)
   // Function to fetch data from the API
   async function fetchData(diffEndPoints, diffType) {
     const url = `https://app.doichaangcorporate.com/app/api/${diffEndPoints}`; // Replace this with your API endpoint
@@ -40,6 +51,7 @@ function reRenderDocs(languageChange) {
       data = await response.json();
 
       // Do something with the data
+      console.log(data)
       return data;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -174,6 +186,18 @@ function reRenderDocs(languageChange) {
     item.addEventListener(
       "click",
       (e) => {
+
+        footerIconDivs.forEach((item,index)=>{
+          item.childNodes.forEach((item,index)=>{
+            item.style.color="#000";
+          });
+        })
+
+
+        item.childNodes.forEach((item,index)=>{
+          item.style.color="#008DDA";
+        });
+
         impFourSections.forEach((item) => {
           item.style.display = "none";
         });
@@ -200,152 +224,156 @@ function reRenderDocs(languageChange) {
 
   let menuIds = undefined;
 
-  fetchData("getProductDetail", "product").then((data) => {
-    const { return_data } = data;
-
-    return_data.forEach((itemMain, indexMain) => {
-      let scrollElement = `
-        <div class="scroll-image" data-menuimg="menuimgDiv${indexMain + 1}">
-        <img src="${itemMain.icon_filename_url}" alt="img">
-        </div>
-    `;
-      scrollMenu.insertAdjacentHTML("beforeend", scrollElement);
-
-      //::::::::::::::::::::::===========||||||||||||||||||||||===========:::::::::::::::::::::::::://
-
-      const scrollImage = document.querySelectorAll(".scroll-image");
-
-      let menuimgDivsHtml =
-        `
-        <div id="menuimgDiv${indexMain + 1}" class="menuimgDiv">
-        <ul class="menuContainer-ul">` +
-        itemMain.product_group
-          .map((item, index) => {
-            return `<li data-menulistcount='menuContainer${indexMain + 1}${
-              index + 1
-            }'>${languageChange ? item.name_en : item.name_th}</li>`;
-          })
-          .join(" ") +
-        `</ul>
-
-        
-        <div  id="menuContainer${indexMain + 1}">` +
-        itemMain.product_group
-          .map((item1, index) => {
-            return (
-              `<div class="menuContainer" id="menuContainer${indexMain + 1}${
+ 
+    fetchData("getProductDetail", "product").then((data) => {
+      const { return_data } = data;
+  
+      return_data.forEach((itemMain, indexMain) => {                                                                                                                                                
+        let scrollElement = `
+          <div class="scroll-image" data-menuimg="menuimgDiv${indexMain + 1}">
+          <img src="${itemMain.icon_filename_url}" alt="img">
+          </div>
+      `;
+        scrollMenu.insertAdjacentHTML("beforeend", scrollElement);
+  
+        //::::::::::::::::::::::===========||||||||||||||||||||||===========:::::::::::::::::::::::::://
+  
+        const scrollImage = document.querySelectorAll(".scroll-image");
+        //console.log(itemMain);
+  
+        let menuimgDivsHtml =
+          `
+          <div id="menuimgDiv${indexMain + 1}" class="menuimgDiv">
+          <ul class="menuContainer-ul">` +
+          `<span>${languageChange ? itemMain.name_en : itemMain.name_th}</span>`+
+          itemMain.product_group
+            .map((item, index) => {
+              return `<li data-menulistcount='menuContainer${indexMain + 1}${
                 index + 1
-              }">` +
-              item1.product_item
-                .map((item, index) => {
-                  return `
-                          <div class="menuContainer-img">
-                              <img src="${item.icon_filename_url}" alt="img">
-                              <p class="beverage-name">${
-                                languageChange ? item.name_en : item.name_th
-                              }</p>
-                              <p class="beverage-description">${
-                                languageChange
-                                  ? item.description_en
-                                  : item.description_th
-                              }</p>
-                          </div>
-                          `;
-                })
-                .join(" ") +
-              `</div>`
+              }'>${languageChange ? item.name_en : item.name_th}</li>`;
+            })
+            .join(" ") +
+          `</ul>
+  
+          
+          <div  id="menuContainer${indexMain + 1}">` +
+          itemMain.product_group
+            .map((item1, index) => {
+              return (
+                `<div class="menuContainer" id="menuContainer${indexMain + 1}${
+                  index + 1
+                }">` +
+                item1.product_item
+                  .map((item, index) => {
+                    return `
+                            <div class="menuContainer-img">
+                                <img src="${item.icon_filename_url}" alt="img">
+                                <p class="beverage-name">${
+                                  languageChange ? item.name_en : item.name_th
+                                }</p>
+                                <p class="beverage-description">${
+                                  languageChange
+                                    ? item.description_en
+                                    : item.description_th
+                                }</p>
+                            </div>
+                            `;
+                  })
+                  .join(" ") +
+                `</div>`
+              );
+            })
+            .join(" ") +
+          `</div>
+          </div>
+          `;
+  
+        allMenusContainer.insertAdjacentHTML("beforeend", menuimgDivsHtml);
+  
+        const menuimgDiv = document.querySelectorAll(".menuimgDiv");
+  
+        menuimgDiv.forEach((item) => {
+          item.style.display = "none";
+        });
+  
+        menuimgDiv[0].style.display = "grid";
+  
+        //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
+  
+        const menuContainerSelect = document.querySelectorAll(
+          "#menuContainer1 .menuContainer"
+        );
+        menuContainerSelect.forEach((item) => {
+          item.style.display = "none";
+        });
+        menuContainerSelect[0].style.display = "grid";
+  
+        //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
+  
+        const menuContainerUlLi = document.querySelectorAll(
+          ".menuContainer-ul li"
+        );
+        const menuContainer = document.querySelectorAll(".menuContainer");
+  
+        menuContainerUlLi.forEach((item) => {
+          item.addEventListener("click", (e) => {
+            menuContainer.forEach((item) => {
+              item.style.display = "none";
+            });
+  
+            let menuContainerClass = item.dataset.menulistcount;
+  
+            let selectedMenuContainer = document.querySelector(
+              `#${menuContainerClass}`
             );
-          })
-          .join(" ") +
-        `</div>
-        </div>
-        `;
-
-      allMenusContainer.insertAdjacentHTML("beforeend", menuimgDivsHtml);
-
-      const menuimgDiv = document.querySelectorAll(".menuimgDiv");
-
-      menuimgDiv.forEach((item) => {
-        item.style.display = "none";
-      });
-
-      menuimgDiv[0].style.display = "grid";
-
-      //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
-
-      const menuContainerSelect = document.querySelectorAll(
-        "#menuContainer1 .menuContainer"
-      );
-      menuContainerSelect.forEach((item) => {
-        item.style.display = "none";
-      });
-      menuContainerSelect[0].style.display = "grid";
-
-      //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
-
-      const menuContainerUlLi = document.querySelectorAll(
-        ".menuContainer-ul li"
-      );
-      const menuContainer = document.querySelectorAll(".menuContainer");
-
-      menuContainerUlLi.forEach((item) => {
-        item.addEventListener("click", (e) => {
-          menuContainer.forEach((item) => {
-            item.style.display = "none";
-          });
-
-          let menuContainerClass = item.dataset.menulistcount;
-
-          let selectedMenuContainer = document.querySelector(
-            `#${menuContainerClass}`
-          );
-          selectedMenuContainer.style.display = "grid";
-        });
-      });
-
-      //:::::::::::::::::::::::::::::=========|||||||||||||||||===========:::::::::::::::::::::::://
-
-      scrollImage.forEach((item, index) => {
-        item.addEventListener("click", (e) => {
-          menuimgDiv.forEach((item) => {
-            item.style.display = "none";
-          });
-
-          menuIds = item.dataset.menuimg;
-          let singleMenuDiv = document.querySelector(`#${menuIds}`);
-          singleMenuDiv.style.display = "block";
-
-          const menuContainerFirst = document.querySelector(`#${menuIds}`);
-
-          [...menuContainerFirst.children[1].children].forEach((item) => {
-            item.style.display = "none";
-          });
-
-          let magicValue = menuContainerFirst.children[1].children[0];
-          magicValue.style.display = "grid";
-        });
-      });
-
-      /*=========================|||||||||||||||||||=========================== */
-      const menuContainerImg = document.querySelectorAll(".menuContainer-img");
-
-      menuContainerImg.forEach((item) => {
-     
-        item.addEventListener("click", function () {
-
-          contentProductDescPara.innerText = item.children[2].innerText;
-          contentProductImage.setAttribute("src", this.children[0].getAttribute("src"));
-          contentDetails.style.display = "block";
-
-          contentDetailsBackBtn.addEventListener("click", () => {
-            contentDetails.style.display = "none";
+            selectedMenuContainer.style.display = "grid";
           });
         });
+  
+        //:::::::::::::::::::::::::::::=========|||||||||||||||||===========:::::::::::::::::::::::://
+  
+        scrollImage.forEach((item, index) => {
+          item.addEventListener("click", (e) => {
+            menuimgDiv.forEach((item) => {
+              item.style.display = "none";
+            });
+  
+            menuIds = item.dataset.menuimg;
+            let singleMenuDiv = document.querySelector(`#${menuIds}`);
+            singleMenuDiv.style.display = "block";
+  
+            const menuContainerFirst = document.querySelector(`#${menuIds}`);
+  
+            [...menuContainerFirst.children[1].children].forEach((item) => {
+              item.style.display = "none";
+            });
+  
+            let magicValue = menuContainerFirst.children[1].children[0];
+            magicValue.style.display = "grid";
+          });
+        });
+  
+        /*=========================|||||||||||||||||||=========================== */
+        const menuContainerImg = document.querySelectorAll(".menuContainer-img");
+  
+        menuContainerImg.forEach((item) => {
+       
+          item.addEventListener("click", function () {
+  
+            contentProductDescPara.innerText = item.children[2].innerText;
+            contentProductImage.setAttribute("src", this.children[0].getAttribute("src"));
+            contentDetails.style.display = "block";
+  
+            contentDetailsBackBtn.addEventListener("click", () => {
+              contentDetails.style.display = "none";
+            });
+          });
+        });
+  
+        /*=========================|||||||||||||||||||=========================== */
       });
-
-      /*=========================|||||||||||||||||||=========================== */
     });
-  });
+
 
   /*::::::::::::::::::::::::::::::::menu Section end:::::::::::::::::::::::::::::::::::::::*/
 

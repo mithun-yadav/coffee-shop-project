@@ -9,9 +9,11 @@
     <link rel="stylesheet" href="assets/css/style.css">
 
     <!------------------------Fonts------------------------>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
     <!-----------------Fonts awesome--------------------->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="assets/css/all.css">
 </head>
 
 <body>
@@ -38,12 +40,34 @@
 
                 </div>
                 <div class="allMenusContainer">
-                    
+
                 </div>
             </div>
         </section>
         <section id="profile" class="impFourSections" style="display: none;">
-            <h1>Profile</h1>
+            <div class="profile-img-div">
+                <img src="assets/images/logo_img.png" alt="">
+            </div>
+            <div class="select-lang-div">
+                <h2>Change language</h2>
+                <ul class="lang-list">
+                    <li>
+                        <input type="radio" id="f-option" name="selector">
+                        <label for="f-option">English</label>
+
+                        <div class="check"></div>
+                    </li>
+
+                    <li>
+                        <input type="radio" id="s-option" name="selector">
+                        <label for="s-option">Thai</label>
+
+                        <div class="check">
+                            <div class="inside"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </section>
         <section id="shop" class="impFourSections" style="display: none;">
             <div class="shop-div">
@@ -53,10 +77,14 @@
     </main>
     <footer>
         <div class="footer-icons">
-            <div class="footer-icon fi1"><input type="checkbox" data-divName="home"><span><i class="fa-solid fa-house"></i></span><span>Home</span></div>
-            <div class="footer-icon fi2" data-divName="menu"><input type="checkbox" data-divName="menu"><span><i class="fa-solid fa-glass-water"></i></span><span>Menu</span></div>
-            <div class="footer-icon fi3" data-divName="profile"><input type="checkbox" data-divName="profile"><span><i class="fa-solid fa-user"></i></span><span>Profile</span></div>
-            <div class="footer-icon fi4" data-divName="shop"><input type="checkbox" data-divName="shop"><span><i class="fa-solid fa-location-dot"></i></span><span>Shops</span></div>
+            <div class="footer-icon fi1"><input type="checkbox" data-divName="home"><span><i
+                        class="fa-solid fa-house"></i></span><span>Home</span></div>
+            <div class="footer-icon fi2" data-divName="menu"><input type="checkbox" data-divName="menu"><span><i
+                        class="fa-solid fa-glass-water"></i></span><span>Menu</span></div>
+            <div class="footer-icon fi3" data-divName="profile"><input type="checkbox" data-divName="profile"><span><i
+                        class="fa-solid fa-user"></i></span><span>Profile</span></div>
+            <div class="footer-icon fi4" data-divName="shop"><input type="checkbox" data-divName="shop"><span><i
+                        class="fa-solid fa-location-dot"></i></span><span>Shops</span></div>
         </div>
     </footer>
 
@@ -67,7 +95,7 @@
                 <p>lorem</p>
             </div>
             <div class="contentProductImageDiv">
-                <img src="https://png.pngtree.com/png-clipart/20210613/original/pngtree-coffee-smoothie-png-image_6407216.jpg" alt="img" class="contentProductImage">
+                <img src="" alt="img" class="contentProductImage">
             </div>
         </div>
     </section>
@@ -75,4 +103,6 @@
 </body>
 
 <script src="assets/js/script.js"></script>
+<script src="assets/js/all.js"></script>
+
 </html>
