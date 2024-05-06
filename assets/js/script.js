@@ -1,25 +1,49 @@
-//let languageChange1 = true;
 
-reRenderDocs(languageChange1=true);
+reRenderDocs();
 
 /*::::::::::::::::::::::::::::::::Profile Section start:::::::::::::::::::::::::::::::::::::::*/
+
   const langListLi = document.querySelectorAll(".lang-list li");
-  console.log(langListLi)
   langListLi.forEach((item,index)=>{
     item.addEventListener("click",()=>{
-      console.log(item.textContent)
-      if(item.textContent === "English"){
-        console.log("mmmm");
+      if(item.textContent.trim() === "English"){
+
+        document.querySelectorAll(".th").forEach((item)=>{
+          item.classList.remove("display");
+        })
+        document.querySelectorAll(".th").forEach((item,index)=>{
+          item.classList.add("noDisplay")
+        });
+
+        document.querySelectorAll(".en").forEach((item)=>{
+          item.classList.remove("noDisplay");
+        })
+        document.querySelectorAll(".en").forEach((item,index)=>{
+          item.classList.add("display")
+        });
       }
-      else{
-        console.log("yyyy");
+      else{        
+        document.querySelectorAll(".en").forEach((item)=>{
+          item.classList.remove("display");
+        })
+        document.querySelectorAll(".en").forEach((item,index)=>{
+          item.classList.add("noDisplay")
+        });
+
+        document.querySelectorAll(".th").forEach((item)=>{
+          item.classList.remove("noDisplay");
+        })
+        document.querySelectorAll(".th").forEach((item,index)=>{
+          item.classList.add("display")
+        });
       }
     })
   });
   /*::::::::::::::::::::::::::::::::Profile Section end:::::::::::::::::::::::::::::::::::::::*/
 
 function reRenderDocs(languageChange) {
-  //console.log(languageChange)
+
+
   // Function to fetch data from the API
   async function fetchData(diffEndPoints, diffType) {
     const url = `https://app.doichaangcorporate.com/app/api/${diffEndPoints}`; // Replace this with your API endpoint
@@ -51,7 +75,6 @@ function reRenderDocs(languageChange) {
       data = await response.json();
 
       // Do something with the data
-      console.log(data)
       return data;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -125,11 +148,9 @@ function reRenderDocs(languageChange) {
                     }" alt="img" class="mainSectionImg">
 
                     <div class="detailsImgDesc">
-                      <p>${
-                        languageChange
-                          ? item.product_item[0].description_en
-                          : item.product_item[0].description_th
-                      }</p>
+                      <p class="en">
+                        <span class="en">${item.product_item[0].description_en}</span><span class="th">${item.product_item[0].description_th}</span>
+                      </p>
                       <img src="${
                         item.product_item[0].icon_filename_url
                       }" alt="ll">
@@ -161,11 +182,10 @@ function reRenderDocs(languageChange) {
                 }" alt="img" class="mainSectionImg">
 
                 <div class="detailsImgDesc">
-                      <p>${
-                        languageChange
-                          ? item.product_item[0].description_en
-                          : item.product_item[0].description_th
-                      }</p>
+                      <p>
+                        <span class="en">${item.product_item[0].description_en}</span>
+                        <span class="th">${item.product_item[0].description_th}</span>
+                      </p>
                       <img src="${
                         item.product_item[0].icon_filename_url
                       }" alt="ll">
@@ -182,7 +202,6 @@ function reRenderDocs(languageChange) {
 
   /*:::::::::::::::::::::::::::::Footer page start:::::::::::::::::::::::::::::::::::*/
 
-  console.log(footerIconDivs[0].childNodes)
   footerIconDivs[0].childNodes.forEach((item,index)=>{
     item.style.color="#008DDA";
   });
@@ -245,18 +264,19 @@ function reRenderDocs(languageChange) {
         //::::::::::::::::::::::===========||||||||||||||||||||||===========:::::::::::::::::::::::::://
   
         const scrollImage = document.querySelectorAll(".scroll-image");
-        //console.log(itemMain);
   
         let menuimgDivsHtml =
           `
           <div id="menuimgDiv${indexMain + 1}" class="menuimgDiv">
           <ul class="menuContainer-ul">` +
-          `<span>${languageChange ? itemMain.name_en : itemMain.name_th}</span>`+
+          `<span class="en">${itemMain.name_en}</span><span class="th">${itemMain.name_th}</span>`+
           itemMain.product_group
             .map((item, index) => {
-              return `<li data-menulistcount='menuContainer${indexMain + 1}${
+              return `<li class="en" data-menulistcount='menuContainer${indexMain + 1}${
                 index + 1
-              }'>${languageChange ? item.name_en : item.name_th}</li>`;
+              }'>${item.name_en}</li><li class="th" data-menulistcount='menuContainer${indexMain + 1}${
+                index + 1
+              }'>${item.name_th}</li>`;
             })
             .join(" ") +
           `</ul>
@@ -274,14 +294,16 @@ function reRenderDocs(languageChange) {
                     return `
                             <div class="menuContainer-img">
                                 <img src="${item.icon_filename_url}" alt="img">
-                                <p class="beverage-name">${
-                                  languageChange ? item.name_en : item.name_th
+                                <p class="beverage-name en">${
+                                  item.name_en
                                 }</p>
-                                <p class="beverage-description">${
-                                  languageChange
-                                    ? item.description_en
-                                    : item.description_th
+                                <p class="beverage-name th">${
+                                  item.name_th
                                 }</p>
+                                <p class="beverage-description">
+                                  <span class="en">${item.description_en}</span>
+                                  <span class="th">${item.description_th}</span>
+                                </p>
                             </div>
                             `;
                   })
@@ -304,6 +326,16 @@ function reRenderDocs(languageChange) {
   
         menuimgDiv[0].style.display = "grid";
   
+        //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
+
+        document.querySelectorAll(".th").forEach((item,index)=>{
+          item.classList.add("noDisplay")
+        });
+        
+        document.querySelectorAll(".en").forEach((item,index)=>{
+          item.classList.add("display")
+        });
+
         //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
   
         const menuContainerSelect = document.querySelectorAll(
@@ -365,7 +397,7 @@ function reRenderDocs(languageChange) {
         menuContainerImg.forEach((item) => {
        
           item.addEventListener("click", function () {
-  
+
             contentProductDescPara.innerText = item.children[2].innerText;
             contentProductImage.setAttribute("src", this.children[0].getAttribute("src"));
             contentDetails.style.display = "block";
@@ -413,9 +445,13 @@ function reRenderDocs(languageChange) {
     return_data.forEach((item, index) => {
       const newsHtml = `
             <div class="addreses-phoneNo-div first-info-div">
-            <h3>${languageChange ? item.name_en : item.name_th}</h3>
-            <p>${
-              languageChange ? item.full_address_en : item.full_address_th
+            <h3 class="en">${item.name_en}</h3>
+            <h3 class="th">${item.name_th}</h3>
+            <p class="en">${
+              item.full_address_en
+            }</p>
+            <p class="th">${
+              item.full_address_th
             }</p>
             <div class="addreses-phoneNo">
                 <div class="mobileNo"><a href="tel:${item.tel_no}">${
