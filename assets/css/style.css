@@ -178,7 +178,7 @@ main section{
 .footer-icon span{
     display: inline-block;
     width: 100%;
-    color:#000;
+    /* color:#000; */
 }
 
 
@@ -188,21 +188,6 @@ footer{
     width: 100%;
     background-color: #fff;
     height: 80px;
-}
-
-.footer-icon input[type="checkbox"]{
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-}
-
-
-.footer-icon input[type="checkbox"]:focus ~ span{
-    color: #3700ff;
-}
-
-.footerIconColor{
-    color: #3700ff;
 }
 
  /*::::::::::::::::::::::::::::::::Footer Section end:::::::::::::::::::::::::::::::::::::::*/
@@ -473,4 +458,16 @@ footer{
     }
     .noDisplay{
         display: none;
+    }
+
+
+    .nav {
+        color: black; /* Default color */
+        cursor: pointer;
+        padding: 10px;
+        margin: 5px;
+    }
+    
+    .active {
+        color: var(--primaryColor); /* Active color */
     }
