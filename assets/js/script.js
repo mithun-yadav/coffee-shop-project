@@ -165,6 +165,7 @@ function reRenderDocs() {
         newsSection.insertAdjacentHTML("beforeend", newsHtml);
       });
       contentProductFunc();
+      promotionFetch();
     })
   );
 
@@ -172,40 +173,43 @@ function reRenderDocs() {
 
   /*:::::::::::::::::::::::::::::Promotion page start:::::::::::::::::::::::::::::::::::*/
 
-  const promotionsSection = document.querySelector("#promotions-section");
-  fetchData("getProductDetail", "promotion").then((data) => {
-    const { return_data } = data;
-    const imageArray = return_data[0].product_group;
-
-    imageArray.forEach((item, index) => {
-      const newsHtml = `
-            <section id="" class="contentdetailsSection" data-contentdetails="${
-              index + 1
-            }">
-                <img src="${
-                  item.icon_filename_url
-                }" alt="img" class="mainSectionImg">
-
-                <div class="detailsImgDesc">
-                      <p>
-                        <span class="en">${
-                          item.product_item[0].description_en
-                        }</span>
-                        <span class="th">${
-                          item.product_item[0].description_th
-                        }</span>
-                      </p>
-                      <img src="${
-                        item.product_item[0].icon_filename_url
-                      }" alt="ll">
-                </div> 
-            </section>
-        `;
-      promotionsSection.insertAdjacentHTML("beforeend", newsHtml);
+  function promotionFetch(){
+    const promotionsSection = document.querySelector("#promotions-section");
+    fetchData("getProductDetail", "promotion").then((data) => {
+      const { return_data } = data;
+      const imageArray = return_data[0].product_group;
+  
+      imageArray.forEach((item, index) => {
+        const newsHtml = `
+              <section id="" class="contentdetailsSection" data-contentdetails="${
+                index + 1
+              }">
+                  <img src="${
+                    item.icon_filename_url
+                  }" alt="img" class="mainSectionImg">
+  
+                  <div class="detailsImgDesc">
+                        <p>
+                          <span class="en">${
+                            item.product_item[0].description_en
+                          }</span>
+                          <span class="th">${
+                            item.product_item[0].description_th
+                          }</span>
+                        </p>
+                        <img src="${
+                          item.product_item[0].icon_filename_url
+                        }" alt="ll">
+                  </div> 
+              </section>
+          `;
+        promotionsSection.insertAdjacentHTML("beforeend", newsHtml);
+      });
+  
+      contentProductFunc();
+      menuFetch();
     });
-
-    contentProductFunc();
-  });
+  }
 
   /*:::::::::::::::::::::::::::::Promotion page end:::::::::::::::::::::::::::::::::::*/
 
@@ -243,7 +247,6 @@ function reRenderDocs() {
       true
     );
   });
-
   
   impFourSections.forEach((item) => {
     item.style.display = "none";
@@ -271,7 +274,8 @@ function reRenderDocs() {
   /*:::::::::::::::::::::::::::::Footer page end:::::::::::::::::::::::::::::::::::*/
 
   /*::::::::::::::::::::::::::::::::Menu Section start:::::::::::::::::::::::::::::::::::::::*/
-  const scrollMenu = document.querySelector(".scroll-menu");
+  function menuFetch(){
+    const scrollMenu = document.querySelector(".scroll-menu");
   const allMenusContainer = document.querySelector(".allMenusContainer");
 
   let menuIds = undefined;
@@ -437,6 +441,9 @@ function reRenderDocs() {
     });
   });
 
+  shopFetch();
+  }
+
   /*::::::::::::::::::::::::::::::::menu Section end:::::::::::::::::::::::::::::::::::::::*/
 
   /*::::::::::::::::::::::::::::::::contentProduct Details Section start:::::::::::::::::::::::::::::::::::::::*/
@@ -466,12 +473,9 @@ function reRenderDocs() {
   /*::::::::::::::::::::::::::::::::contentProduct Details Section end:::::::::::::::::::::::::::::::::::::::*/
 
   /*::::::::::::::::::::::::::::::::Shop Section start:::::::::::::::::::::::::::::::::::::::*/
-  const shop = document.querySelector("#shop");
+  function shopFetch(){
+    const shop = document.querySelector("#shop");
   fetchData("getShopAddress", "promotion").then((data) => {
-    
-    document.querySelectorAll(".th").forEach((item, index) => {
-      item.classList.add("noDisplay");
-    });
 
     const { return_data } = data;
     return_data.forEach((item, index) => {
@@ -491,7 +495,11 @@ function reRenderDocs() {
     });
 
     contentProductFunc();
+    document.querySelectorAll(".th").forEach((item, index) => {
+      item.classList.add("noDisplay");
+    });
   });
+  }
 
   /*::::::::::::::::::::::::::::::::Shop Section end:::::::::::::::::::::::::::::::::::::::*/
 }
