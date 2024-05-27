@@ -373,6 +373,7 @@ footer{
     }
     #profile{
         height: calc(100vh - 80px);
+        overflow-y: scroll;
     }
 
     .select-lang-div {
@@ -568,11 +569,32 @@ footer{
     }
     .userInfo{
         text-align: center;
+        padding: 1rem 0;
+        box-shadow: 0 0 3px grey;
+        margin: 0 auto;
+        width: 90%;
     }
 
     .userInfo p{
         margin: 8px;
         font-size: 20px;
+        position: relative;
+    }
+
+    .userInfo p::before{
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        width: 50%;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 2px;
+        background-color: rgb(182, 179, 179);
+        border-radius: 100vw;
+    }
+
+    .userInfo p:nth-child(5)::before{
+        height: 0;
     }
 
     .logout-btn{
