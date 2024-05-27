@@ -2,52 +2,135 @@ reRenderDocs();
 
 /*::::::::::::::::::::::::::::::::Profile Section start:::::::::::::::::::::::::::::::::::::::*/
 
-const langListLi = document.querySelectorAll(".lang-list li");
-langListLi.forEach((item, index) => {
-  item.addEventListener("click", () => {
-    if (item.textContent.trim() === "English") {
-      document.querySelectorAll(".th").forEach((item) => {
-        item.classList.remove("display");
-      });
-      document.querySelectorAll(".th").forEach((item, index) => {
-        item.classList.add("noDisplay");
-      });
-
-      document.querySelectorAll(".en").forEach((item) => {
-        item.classList.remove("noDisplay");
-      });
-      document.querySelectorAll(".en").forEach((item, index) => {
-        item.classList.add("display");
-      });
-    } else {
-      document.querySelectorAll(".en").forEach((item) => {
-        item.classList.remove("display");
-      });
-      document.querySelectorAll(".en").forEach((item, index) => {
-        item.classList.add("noDisplay");
-      });
-
-      document.querySelectorAll(".th").forEach((item) => {
-        item.classList.remove("noDisplay");
-      });
-      document.querySelectorAll(".th").forEach((item, index) => {
-        item.classList.add("display");
-      });
-    }
-  });
-});
 /*::::::::::::::::::::::::::::::::Profile Section end:::::::::::::::::::::::::::::::::::::::*/
 
 function reRenderDocs() {
+  const langListLi = document.querySelectorAll(".lang-list li");
+  const loginBtn = document.querySelector(".login-btn");
+  const logoutBtn = document.querySelector(".logout-btn");
+  const mobileNumberForm = document.querySelector(".mobile-number-form");
+  const closeMobileForm = document.querySelector(".close-mobile-form");
+  const submitPhoneBtn = document.querySelector(".submit-phone-btn");
+  const otpSubmitForm = document.querySelector(".otp-submit-form");
+  const otpInput = document.querySelector("#otp-input");
+  const otpNotValidMessage = document.querySelector(".otpNotValidMessage");
+  const successfulLoginDiv = document.querySelector(".successful-login-div");
+  const userInfo = document.querySelector(".userInfo");
+  const displayLoginLogout = document.querySelector(".displayLoginLogout");
+  
+  langListLi.forEach((item, index) => {
+    item.addEventListener("click", () => {
+      if (item.textContent.trim() === "English") {
+        document.querySelectorAll(".th").forEach((item) => {
+          item.classList.remove("display");
+        });
+        document.querySelectorAll(".th").forEach((item, index) => {
+          item.classList.add("noDisplay");
+        });
+
+        document.querySelectorAll(".en").forEach((item) => {
+          item.classList.remove("noDisplay");
+        });
+        document.querySelectorAll(".en").forEach((item, index) => {
+          item.classList.add("display");
+        });
+      } else {
+        document.querySelectorAll(".en").forEach((item) => {
+          item.classList.remove("display");
+        });
+        document.querySelectorAll(".en").forEach((item, index) => {
+          item.classList.add("noDisplay");
+        });
+
+        document.querySelectorAll(".th").forEach((item) => {
+          item.classList.remove("noDisplay");
+        });
+        document.querySelectorAll(".th").forEach((item, index) => {
+          item.classList.add("display");
+        });
+      }
+    });
+  });
+
+  let temproryDataStore={};
+  let temproryOtp="";
+  let phoneNumberValue="";
+
+  if(localStorage.getItem("userInfoLogin")){
+    displayLoginLogout.classList.add("noDisplay");
+  }else{
+    logoutBtn.classList.add("noDisplay");
+  } 
+
+  mobileNumberForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const phoneSignin = document.querySelector("#phone-signin");
+    console.log(phoneSignin.value, "=========");
+    phoneNumberValue = phoneSignin.value;
+    function temporaryFunction(res){
+      const {return_data} = res;
+      console.log(return_data[0]);
+      temproryOtp = return_data[0].otp,
+      temproryDataStore = {
+        username:return_data[0].username, 
+        firstName:return_data[0].first_name, 
+        lastName:return_data[0].last_name, 
+        email:return_data[0].email,
+      };
+      otpSubmitForm.classList.toggle("noDisplay");
+      console.log(temproryDataStore);
+    }
+
+    if(phoneNumberValue !="" && isFinite(phoneNumberValue)){
+      console.log(phoneNumberValue);
+      submitPhoneBtn.disabled = false;
+      fetchData("userLoginWithUsername", phoneNumberValue).then((res) => {
+        temporaryFunction(res);
+      });
+    }
+    else{
+      submitPhoneBtn.disabled = true;
+    }
+  });
+
+  function userInfoShow(){
+    successfulLoginDiv.classList.remove("noDisplay");
+    userInfo.insertAdjacentHTML("beforeend",`
+        <p>${temproryDataStore.username}</p>
+        <p>${temproryDataStore.firstName}</p>
+        <p>${temproryDataStore.lastName}</p>
+        <p>${temproryDataStore.email}</p>
+    `);
+
+    localStorage.setItem("userInfoLogin",JSON.stringify(temproryDataStore));
+  }
+
+  otpSubmitForm.addEventListener("submit",()=>{
+    if(temproryOtp==otpInput.value){
+      otpNotValidMessage.classList.add("noDisplay");
+      console.log("sucess");
+      console.log(phoneNumberValue);
+      fetchData("generateBarcode","0802211925").then((res)=>console.log(res));
+      userInfoShow();
+    }
+    else{
+      otpNotValidMessage.classList.remove("noDisplay");
+    }  
+  })
+
+  loginBtn.addEventListener("click", () => {
+    mobileNumberForm.classList.toggle("noDisplay");
+  });
+
+  closeMobileForm.addEventListener("click", () => {
+    mobileNumberForm.classList.toggle("noDisplay");
+  });
 
   const urlParams = new URLSearchParams(window.location.search);
 
   const paramValue = urlParams.get("module");
 
   // Function to fetch data from the API
-
-
-
 
   async function fetchData(diffEndPoints, diffType) {
     const url = `https://app.doichaangcorporate.com/app/api/${diffEndPoints}`; // Replace this with your API endpoint
@@ -106,7 +189,6 @@ function reRenderDocs() {
   let homeAllSection = document.querySelectorAll(".homePage");
 
   topHeader.addEventListener("click", (e) => {
-    
     let tabName = e.target.innerText;
     tabName == "NEWS"
       ? document.documentElement.style.setProperty("--tabChangeAnime", "50%")
@@ -173,12 +255,12 @@ function reRenderDocs() {
 
   /*:::::::::::::::::::::::::::::Promotion page start:::::::::::::::::::::::::::::::::::*/
 
-  function promotionFetch(){
+  function promotionFetch() {
     const promotionsSection = document.querySelector("#promotions-section");
     fetchData("getProductDetail", "promotion").then((data) => {
       const { return_data } = data;
       const imageArray = return_data[0].product_group;
-  
+
       imageArray.forEach((item, index) => {
         const newsHtml = `
               <section id="" class="contentdetailsSection" data-contentdetails="${
@@ -205,7 +287,7 @@ function reRenderDocs() {
           `;
         promotionsSection.insertAdjacentHTML("beforeend", newsHtml);
       });
-  
+
       contentProductFunc();
       menuFetch();
     });
@@ -238,7 +320,8 @@ function reRenderDocs() {
           left: 0,
         });
 
-        let selectedFooterBtnName = e.target.closest(".footer-icon").dataset.divname;
+        let selectedFooterBtnName =
+          e.target.closest(".footer-icon").dataset.divname;
         let selectedFooterBtn = document.querySelector(
           `#${selectedFooterBtnName}`
         );
@@ -247,7 +330,7 @@ function reRenderDocs() {
       true
     );
   });
-  
+
   impFourSections.forEach((item) => {
     item.style.display = "none";
   });
@@ -256,74 +339,73 @@ function reRenderDocs() {
     item.style.color = "#000";
   });
 
-  try{
+  try {
     let selectFromQuery = document.querySelector(`#${paramValue}`);
     selectFromQuery.style.display = "block";
 
     footerIconDivs.forEach((item, index) => {
-      if(item.dataset.divname == paramValue){
-          item.style.color = "#008DDA";
+      if (item.dataset.divname == paramValue) {
+        item.style.color = "#008DDA";
       }
     });
-  }catch(err){
+  } catch (err) {
     let selectFromQuery = document.querySelector("#home");
     selectFromQuery.style.display = "block";
   }
 
-
   /*:::::::::::::::::::::::::::::Footer page end:::::::::::::::::::::::::::::::::::*/
 
   /*::::::::::::::::::::::::::::::::Menu Section start:::::::::::::::::::::::::::::::::::::::*/
-  function menuFetch(){
+  function menuFetch() {
     const scrollMenu = document.querySelector(".scroll-menu");
-  const allMenusContainer = document.querySelector(".allMenusContainer");
+    const allMenusContainer = document.querySelector(".allMenusContainer");
 
-  let menuIds = undefined;
+    let menuIds = undefined;
 
-  fetchData("getProductDetail", "product").then((data) => {
-    const { return_data } = data;
+    fetchData("getProductDetail", "product").then((data) => {
+      const { return_data } = data;
 
-    return_data.forEach((itemMain, indexMain) => {
-      let scrollElement = `
+      return_data.forEach((itemMain, indexMain) => {
+        let scrollElement = `
           <div class="scroll-image" data-menuimg="menuimgDiv${indexMain + 1}">
           <img src="${itemMain.icon_filename_url}" alt="img">
           </div>
       `;
-      scrollMenu.insertAdjacentHTML("beforeend", scrollElement);
+        scrollMenu.insertAdjacentHTML("beforeend", scrollElement);
 
-      //::::::::::::::::::::::===========||||||||||||||||||||||===========:::::::::::::::::::::::::://
+        //::::::::::::::::::::::===========||||||||||||||||||||||===========:::::::::::::::::::::::::://
 
-      const scrollImage = document.querySelectorAll(".scroll-image");
+        const scrollImage = document.querySelectorAll(".scroll-image");
 
-      let menuimgDivsHtml =
-        `
+        let menuimgDivsHtml =
+          `
           <div id="menuimgDiv${indexMain + 1}" class="menuimgDiv">
           <ul class="menuContainer-ul">` +
-        `<span class="en">${itemMain.name_en}</span><span class="th">${itemMain.name_th}</span>` +
-        itemMain.product_group
-          .map((item, index) => {
-            return `<li class="en" data-menulistcount='menuContainer${
-              indexMain + 1
-            }${index + 1}'>${
-              item.name_en
-            }</li><li class="th" data-menulistcount='menuContainer${
-              indexMain + 1
-            }${index + 1}'>${item.name_th}</li>`;
-          })
-          .join(" ") +
-        `</ul>
+          `<span class="en">${itemMain.name_en}</span><span class="th">${itemMain.name_th}</span>` +
+          itemMain.product_group
+            .map((item, index) => {
+              return `<li class="en" data-menulistcount='menuContainer${
+                indexMain + 1
+              }${index + 1}'>${
+                item.name_en
+              }</li><li class="th" data-menulistcount='menuContainer${
+                indexMain + 1
+              }${index + 1}'>${item.name_th}</li>`;
+            })
+            .join(" ") +
+          `</ul>
   
           
           <div  id="menuContainer${indexMain + 1}">` +
-        itemMain.product_group
-          .map((item1, index) => {
-            return (
-              `<div class="menuContainer" id="menuContainer${indexMain + 1}${
-                index + 1
-              }">` +
-              item1.product_item
-                .map((item, index) => {
-                  return `
+          itemMain.product_group
+            .map((item1, index) => {
+              return (
+                `<div class="menuContainer" id="menuContainer${indexMain + 1}${
+                  index + 1
+                }">` +
+                item1.product_item
+                  .map((item, index) => {
+                    return `
                             <div class="menuContainer-img">
                                 <img src="${item.icon_filename_url}" alt="img">
                                 <p class="beverage-name en">${item.name_en}</p>
@@ -334,114 +416,115 @@ function reRenderDocs() {
                                 </p>
                             </div>
                             `;
-                })
-                .join(" ") +
-              `</div>`
-            );
-          })
-          .join(" ") +
-        `</div>
+                  })
+                  .join(" ") +
+                `</div>`
+              );
+            })
+            .join(" ") +
+          `</div>
           </div>
           `;
 
-      allMenusContainer.insertAdjacentHTML("beforeend", menuimgDivsHtml);
+        allMenusContainer.insertAdjacentHTML("beforeend", menuimgDivsHtml);
 
-      const menuimgDiv = document.querySelectorAll(".menuimgDiv");
+        const menuimgDiv = document.querySelectorAll(".menuimgDiv");
 
-      menuimgDiv.forEach((item) => {
-        item.style.display = "none";
-      });
-
-      menuimgDiv[0].style.display = "grid";
-
-      //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
-
-      document.querySelectorAll(".th").forEach((item, index) => {
-        item.classList.add("noDisplay");
-      });
-
-      document.querySelectorAll(".en").forEach((item, index) => {
-        item.classList.add("display");
-      });
-
-      //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
-
-      const menuContainerSelect = document.querySelectorAll(
-        "#menuContainer1 .menuContainer"
-      );
-      menuContainerSelect.forEach((item) => {
-        item.style.display = "none";
-      });
-      menuContainerSelect[0].style.display = "grid";
-
-      //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
-
-      const menuContainerUlLi = document.querySelectorAll(
-        ".menuContainer-ul li"
-      );
-      const menuContainer = document.querySelectorAll(".menuContainer");
-
-      menuContainerUlLi.forEach((item) => {
-        item.addEventListener("click", (e) => {
-          menuContainer.forEach((item) => {
-            item.style.display = "none";
-          });
-
-          let menuContainerClass = item.dataset.menulistcount;
-
-          let selectedMenuContainer = document.querySelector(
-            `#${menuContainerClass}`
-          );
-          selectedMenuContainer.style.display = "grid";
+        menuimgDiv.forEach((item) => {
+          item.style.display = "none";
         });
-      });
 
-      //:::::::::::::::::::::::::::::=========|||||||||||||||||===========:::::::::::::::::::::::://
+        menuimgDiv[0].style.display = "grid";
 
-      scrollImage.forEach((item, index) => {
-        item.addEventListener("click", (e) => {
-          menuimgDiv.forEach((item) => {
-            item.style.display = "none";
-          });
+        //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
 
-          menuIds = item.dataset.menuimg;
-          let singleMenuDiv = document.querySelector(`#${menuIds}`);
-          singleMenuDiv.style.display = "block";
-
-          const menuContainerFirst = document.querySelector(`#${menuIds}`);
-
-          [...menuContainerFirst.children[1].children].forEach((item) => {
-            item.style.display = "none";
-          });
-
-          let magicValue = menuContainerFirst.children[1].children[0];
-          magicValue.style.display = "grid";
+        document.querySelectorAll(".th").forEach((item, index) => {
+          item.classList.add("noDisplay");
         });
-      });
 
-      /*=========================|||||||||||||||||||=========================== */
-      const menuContainerImg = document.querySelectorAll(".menuContainer-img");
+        document.querySelectorAll(".en").forEach((item, index) => {
+          item.classList.add("display");
+        });
 
-      menuContainerImg.forEach((item) => {
-        item.addEventListener("click", function () {
-          contentProductDescPara.innerText = item.children[2].innerText;
-          contentProductImage.setAttribute(
-            "src",
-            this.children[0].getAttribute("src")
-          );
-          contentDetails.style.display = "block";
+        //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
 
-          contentDetailsBackBtn.addEventListener("click", () => {
-            contentDetails.style.display = "none";
+        const menuContainerSelect = document.querySelectorAll(
+          "#menuContainer1 .menuContainer"
+        );
+        menuContainerSelect.forEach((item) => {
+          item.style.display = "none";
+        });
+        menuContainerSelect[0].style.display = "grid";
+
+        //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
+
+        const menuContainerUlLi = document.querySelectorAll(
+          ".menuContainer-ul li"
+        );
+        const menuContainer = document.querySelectorAll(".menuContainer");
+
+        menuContainerUlLi.forEach((item) => {
+          item.addEventListener("click", (e) => {
+            menuContainer.forEach((item) => {
+              item.style.display = "none";
+            });
+
+            let menuContainerClass = item.dataset.menulistcount;
+
+            let selectedMenuContainer = document.querySelector(
+              `#${menuContainerClass}`
+            );
+            selectedMenuContainer.style.display = "grid";
           });
         });
-      });
 
-      /*=========================|||||||||||||||||||=========================== */
+        //:::::::::::::::::::::::::::::=========|||||||||||||||||===========:::::::::::::::::::::::://
+
+        scrollImage.forEach((item, index) => {
+          item.addEventListener("click", (e) => {
+            menuimgDiv.forEach((item) => {
+              item.style.display = "none";
+            });
+
+            menuIds = item.dataset.menuimg;
+            let singleMenuDiv = document.querySelector(`#${menuIds}`);
+            singleMenuDiv.style.display = "block";
+
+            const menuContainerFirst = document.querySelector(`#${menuIds}`);
+
+            [...menuContainerFirst.children[1].children].forEach((item) => {
+              item.style.display = "none";
+            });
+
+            let magicValue = menuContainerFirst.children[1].children[0];
+            magicValue.style.display = "grid";
+          });
+        });
+
+        /*=========================|||||||||||||||||||=========================== */
+        const menuContainerImg =
+          document.querySelectorAll(".menuContainer-img");
+
+        menuContainerImg.forEach((item) => {
+          item.addEventListener("click", function () {
+            contentProductDescPara.innerText = item.children[2].innerText;
+            contentProductImage.setAttribute(
+              "src",
+              this.children[0].getAttribute("src")
+            );
+            contentDetails.style.display = "block";
+
+            contentDetailsBackBtn.addEventListener("click", () => {
+              contentDetails.style.display = "none";
+            });
+          });
+        });
+
+        /*=========================|||||||||||||||||||=========================== */
+      });
     });
-  });
 
-  shopFetch();
+    shopFetch();
   }
 
   /*::::::::::::::::::::::::::::::::menu Section end:::::::::::::::::::::::::::::::::::::::*/
@@ -473,13 +556,12 @@ function reRenderDocs() {
   /*::::::::::::::::::::::::::::::::contentProduct Details Section end:::::::::::::::::::::::::::::::::::::::*/
 
   /*::::::::::::::::::::::::::::::::Shop Section start:::::::::::::::::::::::::::::::::::::::*/
-  function shopFetch(){
+  function shopFetch() {
     const shop = document.querySelector("#shop");
-  fetchData("getShopAddress", "promotion").then((data) => {
-
-    const { return_data } = data;
-    return_data.forEach((item, index) => {
-      const newsHtml = `
+    fetchData("getShopAddress", "promotion").then((data) => {
+      const { return_data } = data;
+      return_data.forEach((item, index) => {
+        const newsHtml = `
             <div class="addreses-phoneNo-div first-info-div">
             <h3 class="en">${item.name_en}</h3>
             <h3 class="th">${item.name_th}</h3>
@@ -491,14 +573,14 @@ function reRenderDocs() {
             </div>
             </div>
         `;
-      shop.insertAdjacentHTML("beforeend", newsHtml);
-    });
+        shop.insertAdjacentHTML("beforeend", newsHtml);
+      });
 
-    contentProductFunc();
-    document.querySelectorAll(".th").forEach((item, index) => {
-      item.classList.add("noDisplay");
+      contentProductFunc();
+      document.querySelectorAll(".th").forEach((item, index) => {
+        item.classList.add("noDisplay");
+      });
     });
-  });
   }
 
   /*::::::::::::::::::::::::::::::::Shop Section end:::::::::::::::::::::::::::::::::::::::*/
