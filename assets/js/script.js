@@ -17,7 +17,7 @@ function reRenderDocs() {
   const successfulLoginDiv = document.querySelector(".successful-login-div");
   const userInfo = document.querySelector(".userInfo");
   const displayLoginLogout = document.querySelector(".displayLoginLogout");
-  
+
   langListLi.forEach((item, index) => {
     item.addEventListener("click", () => {
       if (item.textContent.trim() === "English") {
@@ -52,71 +52,95 @@ function reRenderDocs() {
     });
   });
 
-  let temproryDataStore={};
-  let temproryOtp="";
-  let phoneNumberValue="";
+  let temproryDataStore = {};
+  let temproryOtp = "";
+  let phoneNumberValue = "";
+  let temproryDataStoreLocal = JSON.parse(
+    localStorage.getItem("userInfoLogin")
+  );
+  let getBonousPoints = localStorage.getItem("bonusPoints");
 
-  if(localStorage.getItem("userInfoLogin")){
-    displayLoginLogout.classList.add("noDisplay");
-  }else{
-    logoutBtn.classList.add("noDisplay");
-  } 
+  function checkLocalStorage() {
+    if (temproryDataStoreLocal) {
+      console.log(temproryDataStoreLocal);
+      displayLoginLogout.classList.add("noDisplay");
+      userInfo.classList.remove("noDisplay");
+      userInfo.insertAdjacentHTML(
+        "afterbegin",
+        `
+          <p>${temproryDataStoreLocal.username}</p>
+          <p>${temproryDataStoreLocal.firstName}</p>
+          <p>${temproryDataStoreLocal.lastName}</p>
+          <p>${temproryDataStoreLocal.email}</p>
+          <p>${getBonousPoints}</p>
+      `
+      );
+    } else {
+      logoutBtn.classList.add("noDisplay");
+    }
+  }
+
+  checkLocalStorage();
+
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("userInfoLogin");
+    localStorage.removeItem("bonusPoints");
+    window.location.reload();
+  });
 
   mobileNumberForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const phoneSignin = document.querySelector("#phone-signin");
-    console.log(phoneSignin.value, "=========");
+    //console.log(phoneSignin.value, "=========");
     phoneNumberValue = phoneSignin.value;
-    function temporaryFunction(res){
-      const {return_data} = res;
-      console.log(return_data[0]);
-      temproryOtp = return_data[0].otp,
-      temproryDataStore = {
-        username:return_data[0].username, 
-        firstName:return_data[0].first_name, 
-        lastName:return_data[0].last_name, 
-        email:return_data[0].email,
-      };
+    function temporaryFunction(res) {
+      const { return_data } = res;
+      console.log("OTP",return_data[0].otp);
+      (temproryOtp = return_data[0].otp),
+        (temproryDataStore = {
+          username: return_data[0].username,
+          firstName: return_data[0].first_name,
+          lastName: return_data[0].last_name,
+          email: return_data[0].email,
+        });
       otpSubmitForm.classList.toggle("noDisplay");
-      console.log(temproryDataStore);
+      //console.log(temproryDataStore);
     }
 
-    if(phoneNumberValue !="" && isFinite(phoneNumberValue)){
-      console.log(phoneNumberValue);
+    if (phoneNumberValue != "" && isFinite(phoneNumberValue)) {
+      //console.log(phoneNumberValue);
       submitPhoneBtn.disabled = false;
       fetchData("userLoginWithUsername", phoneNumberValue).then((res) => {
         temporaryFunction(res);
       });
-    }
-    else{
+    } else {
       submitPhoneBtn.disabled = true;
     }
   });
 
-  function userInfoShow(){
-    successfulLoginDiv.classList.remove("noDisplay");
-    userInfo.insertAdjacentHTML("beforeend",`
-        <p>${temproryDataStore.username}</p>
-        <p>${temproryDataStore.firstName}</p>
-        <p>${temproryDataStore.lastName}</p>
-        <p>${temproryDataStore.email}</p>
-    `);
-
-    localStorage.setItem("userInfoLogin",JSON.stringify(temproryDataStore));
-  }
-
-  otpSubmitForm.addEventListener("submit",()=>{
-    if(temproryOtp==otpInput.value){
+  otpSubmitForm.addEventListener("submit", () => {
+    if (temproryOtp == otpInput.value) {
       otpNotValidMessage.classList.add("noDisplay");
-      console.log("sucess");
-      console.log(phoneNumberValue);
-      fetchData("generateBarcode","0802211925").then((res)=>console.log(res));
-      userInfoShow();
-    }
-    else{
+      //console.log(phoneNumberValue);
+      fetchData("generateBarcode", phoneNumberValue).then((res) => {
+        //console.log(res.return_data[0].bonus);
+        localStorage.setItem("bonusPoints",res.return_data[0].bonus);
+        userInfoShow();
+        window.location.reload();
+      });
+    } else {
       otpNotValidMessage.classList.remove("noDisplay");
-    }  
-  })
+      e.preventDefault();
+    }
+  });
+
+  function userInfoShow() {
+    localStorage.setItem("userInfoLogin", JSON.stringify(temproryDataStore));
+    checkLocalStorage();
+    otpSubmitForm.classList.add("noDisplay");
+    mobileNumberForm.classList.add("noDisplay");
+    //console.log("userInfo");
+  }
 
   loginBtn.addEventListener("click", () => {
     mobileNumberForm.classList.toggle("noDisplay");
@@ -143,6 +167,7 @@ function reRenderDocs() {
     formData.append("access_token", accessToken);
     formData.append("app_version", app_version);
     formData.append("category_type", diffType);
+    formData.append("username", diffType);
 
     let data = undefined;
 
