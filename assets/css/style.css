@@ -359,8 +359,9 @@ footer{
     /*::::::::::::::::::::::::::::::::Shop location Section end:::::::::::::::::::::::::::::::::::::::*/
 
     /*::::::::::::::::::::::::::::::::Profile section start:::::::::::::::::::::::::::::::::::::::*/
+    
     .profile-img-div{
-        height: 25vh;
+        height: 20vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -374,6 +375,7 @@ footer{
     #profile{
         height: calc(100vh - 80px);
         overflow-y: scroll;
+        position: relative;
     }
 
     .select-lang-div {
@@ -401,9 +403,7 @@ footer{
         position: relative;
         font-weight: 300;
         font-size: 1.35em;
-        padding: 35px 25px 35px 80px;
-        /* margin: 10px auto; */
-        /* height: 30px; */
+        padding:8px;
         z-index: 9;
         cursor: pointer;
         -webkit-transition: all 0.25s linear;
@@ -443,6 +443,13 @@ footer{
         margin: auto;
         transition: background 0.25s linear;
         -webkit-transition: background 0.25s linear;
+    }
+
+    .lang-list{
+        display: flex;
+        align-items: end;
+        gap: 10px;
+        text-align: center;
     }
       
       input[type=radio]:checked ~ .check {
@@ -486,9 +493,6 @@ footer{
         width: 220px;
       }
 
-      #profile{
-        position: relative;
-      }
       .signin-model {
         position: absolute;
         inset: 0;
@@ -508,7 +512,7 @@ footer{
         padding: 10px 10px 20px 10px;
         border-radius: 5px;
     }
-    .signin-model-div input[type="text"]{
+    .signin-model-div input[type="number"]{
         padding: 3px;
         font-size: 20px;
         border: none;
@@ -569,10 +573,8 @@ footer{
     }
     .userInfo{
         text-align: center;
-        padding: 1rem 0;
-        box-shadow: 0 0 3px grey;
+        padding: 1rem;
         margin: 0 auto;
-        width: 90%;
     }
 
     .userInfo p{
@@ -608,6 +610,77 @@ footer{
         margin: 0 auto;
         display: block;
     }
+
+    .barcode-div {
+        /* height: 30vh; */
+        width: 100%;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    .generate-qr-btn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .generate-qr-btn button{
+        padding: 16px 30px;
+        outline: none;
+        border: none;
+        background-color: coral;
+        color: #fff;
+        margin-top: 10px;
+    }
+    /*:::::::::::::Logout section start:::::::::::::::::*/
+    .logout-confirm{
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        background-color: #fff;
+        z-index: 100;
+    }
+    .logout-confirm p{
+        text-align: center;
+    }
+
+
+    .logout-confirm-div{
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 85%;
+        box-shadow: 0 0 30px 0px grey;
+        padding: 2rem 1rem;
+        border-radius: 5px;
+    }
+    .confirm-logout-btns button{
+        display: inline-block;
+        width: 100px;
+        padding: 7px 15px;
+        border: none;
+    }
+    .confirm-logout-btns{
+        display: flex;
+        gap: 1rem;
+        justify-content: end;
+    }
+    .confirm-logout-btns button:nth-child(1){
+        background-color:coral;
+        color:#fff;
+    }
+    .confirm-logout-btns button:last-child{
+        background-color:var(--primaryColor);
+        color:#fff;
+    }
+
+    /*:::::::::::::Logout section end:::::::::::::::::*/
     
     /*::::::::::::::::::::::::::::::::Profile section end:::::::::::::::::::::::::::::::::::::::*/
 

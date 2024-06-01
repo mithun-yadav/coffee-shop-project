@@ -16,7 +16,11 @@ function reRenderDocs() {
   const otpNotValidMessage = document.querySelector(".otpNotValidMessage");
   const successfulLoginDiv = document.querySelector(".successful-login-div");
   const userInfo = document.querySelector(".userInfo");
-  const displayLoginLogout = document.querySelector(".displayLoginLogout");
+  const loginSignupDiv = document.querySelector(".login-signup-div");
+  const logoutConfirm  = document.querySelector(".logout-confirm ");
+  const logoutConfirmBtns  = document.querySelectorAll(".confirm-logout-btns button");
+  const generateQrBtn  = document.querySelector(".generate-qr-btn");
+  const barcodeDiv = document.querySelector(".barcode-div");
 
   langListLi.forEach((item, index) => {
     item.addEventListener("click", () => {
@@ -59,34 +63,86 @@ function reRenderDocs() {
     localStorage.getItem("userInfoLogin")
   );
   let getBonousPoints = localStorage.getItem("bonusPoints");
+  checkLocalStorage();
+
+  let qrCodeString = localStorage.getItem("qrCodeString");
+  qrCodeString && generateQRFunc(qrCodeString);
+  console.log(qrCodeString);
+
+
+  function generateQRFunc(qrCodeString){
+    const qrCodeDiv  = document.querySelector(".qr-code-div");
+      var qrCode = new QRCode(qrCodeDiv, {
+          text: qrCodeString,
+          width: 256,
+          height: 256,
+          colorDark : "#000000",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
+      });
+
+      console.log(qrCodeString);
+  }
+
+  generateQrBtn.addEventListener("click",()=>{
+    fetchData("generateBarcode", phoneNumberValue).then((res) => {
+      console.log(phoneNumberValue);
+      //let qrString = res["return_data"][0]["random_barcode"];
+      // localStorage.setItem("qrCodeString",qrString);
+      // localStorage.getItem("qrCodeString") && generateQRFunc(qrString);
+      console.log(qrString);
+      barcodeDiv.classList.remove("noDisplay");
+    });
+  })
+
+  function userInfoFunc(){
+    temproryDataStoreLocal = JSON.parse(
+      localStorage.getItem("userInfoLogin")
+    );
+    userInfo.insertAdjacentHTML(
+      "afterbegin",
+      `
+        <p>${temproryDataStoreLocal.firstName} ${temproryDataStoreLocal.lastName}</p>
+        <div class="more-user-info">
+        <p>${temproryDataStoreLocal.username}</p>
+        <p>${temproryDataStoreLocal.email}</p>
+        <p>${getBonousPoints}</p>
+        </div>
+    `
+    );
+  }
 
   function checkLocalStorage() {
     if (temproryDataStoreLocal) {
       console.log(temproryDataStoreLocal);
-      displayLoginLogout.classList.add("noDisplay");
+      loginSignupDiv.classList.add("noDisplay");
       userInfo.classList.remove("noDisplay");
-      userInfo.insertAdjacentHTML(
-        "afterbegin",
-        `
-          <p>${temproryDataStoreLocal.username}</p>
-          <p>${temproryDataStoreLocal.firstName}</p>
-          <p>${temproryDataStoreLocal.lastName}</p>
-          <p>${temproryDataStoreLocal.email}</p>
-          <p>${getBonousPoints}</p>
-      `
-      );
+      userInfoFunc();
+      barcodeDiv.classList.remove("noDisplay");
     } else {
-      logoutBtn.classList.add("noDisplay");
+      logoutBtn.classList.remove("noDisplay");
     }
   }
 
-  checkLocalStorage();
 
   logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("userInfoLogin");
-    localStorage.removeItem("bonusPoints");
-    window.location.reload();
+    logoutConfirm.classList.remove("noDisplay");
   });
+
+  logoutConfirmBtns.forEach((item)=>{
+    item.addEventListener("click",()=>{
+      console.log(item.dataset.logout);
+      if(item.dataset.logout == "yes"){
+        localStorage.removeItem("userInfoLogin");
+        localStorage.removeItem("bonusPoints");
+        localStorage.removeItem("qrCodeString");
+        barcodeDiv.classList.add("noDisplay");
+        window.location.reload();
+      }else{
+        logoutConfirm.classList.add("noDisplay");
+      }
+    })
+  })
 
   mobileNumberForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -104,7 +160,6 @@ function reRenderDocs() {
           email: return_data[0].email,
         });
       otpSubmitForm.classList.toggle("noDisplay");
-      //console.log(temproryDataStore);
     }
 
     if (phoneNumberValue != "" && isFinite(phoneNumberValue)) {
@@ -123,10 +178,18 @@ function reRenderDocs() {
       otpNotValidMessage.classList.add("noDisplay");
       //console.log(phoneNumberValue);
       fetchData("generateBarcode", phoneNumberValue).then((res) => {
-        //console.log(res.return_data[0].bonus);
+        console.log(res);
+        console.log(res["return_data"][0]["random_barcode"],"barcode");
+        let qrString = res["return_data"][0]["random_barcode"];
         localStorage.setItem("bonusPoints",res.return_data[0].bonus);
-        userInfoShow();
-        window.location.reload();
+        localStorage.setItem("qrCodeString",qrString);
+        userInfoShow(qrString);
+        loginSignupDiv.classList.add("noDisplay");
+        userInfo.classList.remove("noDisplay");
+        barcodeDiv.classList.remove("noDisplay");
+
+        userInfoFunc();
+        // window.location.reload();
       });
     } else {
       otpNotValidMessage.classList.remove("noDisplay");
@@ -134,12 +197,13 @@ function reRenderDocs() {
     }
   });
 
-  function userInfoShow() {
+  function userInfoShow(qrString) {
     localStorage.setItem("userInfoLogin", JSON.stringify(temproryDataStore));
     checkLocalStorage();
     otpSubmitForm.classList.add("noDisplay");
     mobileNumberForm.classList.add("noDisplay");
-    //console.log("userInfo");
+    generateQRFunc(qrString);
+    
   }
 
   loginBtn.addEventListener("click", () => {

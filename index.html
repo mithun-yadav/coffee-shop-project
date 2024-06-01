@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doi Chaang</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="shortcut icon" href="assets/images/logo_img.jpeg" type="image/x-icon">
     <link rel="shortcut icon" href="assets/images/cold-coffee.png" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -49,26 +50,12 @@
             <div class="profile-img-div">
                 <img src="assets/images/logo_img.jpeg" alt="">
             </div>
-            <div class="select-lang-div">
-                <h2>Change language</h2>
-                <ul class="lang-list">
-                    <li>
-                        <input type="radio" id="f-option" name="selector">
-                        <label for="f-option">English</label>
-                        <div class="check"></div>
-                    </li>
-
-                    <li>
-                        <input type="radio" id="s-option" name="selector">
-                        <label for="s-option">ไทย</label>
-                        <div class="check">
-                            <div class="inside"></div>
-                        </div>
-                    </li>
-                </ul>
+            <div class="barcode-div noDisplay">
+                <div class="qr-code-div"></div>
+                <div class="generate-qr-btn"><button>Generate QR</button></div>
             </div>
             <div class="login-signup-logout-div">
-                <div class="login-signup-div displayLoginLogout">
+                <div class="login-signup-div">
                     <div><button class="login-btn">Login</button></div>
                     <div><button class="signup-btn" type="button">Sign Up</button></div>
                 </div>
@@ -83,7 +70,7 @@
                             <div class="close-mobile-form"><i class="fa-solid fa-x"></i></div>
                         </div>
                         <label for="phone-signin">Get otp:</label>
-                        <input type="text" placeholder="Enter your number..." id="phone-signin">
+                        <input type="number" placeholder="Enter your number..." id="phone-signin">
                         <button type="submit" class="submit-phone-btn">Click Here</button>
                     </div>
                 </div>
@@ -95,7 +82,7 @@
                         <!-- <div class="close-mobile-form-div">
                                 <div class="close-otp-form"><i class="fa-solid fa-x"></i></div>
                             </div> -->
-                        <input type="text" placeholder="Enter OTP" maxlength="6" id="otp-input">
+                        <input type="number" placeholder="Enter OTP" maxlength="6" id="otp-input">
                         <button type="submit" class="submit-otp-btn">Validate OTP</button>
                         <p class="otpNotValidMessage noDisplay">OTP NOT CORRECT!</p>
                     </div>
@@ -112,6 +99,27 @@
                 </div>
             </div> -->
             <!--Validate OTP end-->
+            <div class="select-lang-div">
+                <ul class="lang-list">
+                    <li>
+                        <label for="f-option">English</label>
+                    </li>
+
+                    <li>
+                        <label for="s-option">ไทย</label>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="logout-confirm noDisplay">
+                <div class="logout-confirm-div">
+                    <p>Are you sure, you want to logout ?</p>
+                    <div class="confirm-logout-btns">
+                        <button data-logout="no">No</button>
+                        <button data-logout="yes">Yes</button>
+                    </div>
+                </div>
+            </div>
         </section>
         <section id="shop" class="impFourSections" style="display: none;">
             <div class="shop-div">
@@ -148,5 +156,4 @@
 
 <script src="assets/js/script.js"></script>
 <script src="assets/js/all.js"></script>
-
 </html>
