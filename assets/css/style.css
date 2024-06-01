@@ -572,32 +572,18 @@ footer{
     .otpNotValidMessage{
         text-align: center;
     }
-    .userInfo{
-        text-align: center;
+    .userInfo {
         padding: 1rem;
         margin: 0 auto;
+        width: 80%;
+        margin: auto;
+        text-align: center;
     }
 
     .userInfo p{
         margin: 8px;
         font-size: 20px;
         position: relative;
-    }
-
-    .userInfo p::before{
-        content: "";
-        position: absolute;
-        bottom: -5px;
-        width: 50%;
-        left: 50%;
-        transform: translateX(-50%);
-        height: 2px;
-        background-color: rgb(182, 179, 179);
-        border-radius: 100vw;
-    }
-
-    .userInfo p:nth-child(5)::before{
-        height: 0;
     }
 
     .logout-btn{
@@ -635,6 +621,14 @@ footer{
         background-color: coral;
         color: #fff;
         margin-top: 10px;
+    }
+    .info-icons{
+        display: inline-block;
+        width: 30px;
+        height: 25px;
+    }
+    .info-icons svg{
+        color: var(--primaryColor);
     }
     /*:::::::::::::Logout section start:::::::::::::::::*/
     .logout-confirm{
@@ -683,6 +677,12 @@ footer{
     .show-points{
         margin-top: 1rem;
     }
+    .show-points span{
+        font-weight: bold;
+        margin-left: 6px;
+        font-size: 20px;
+    }
+
     /*:::::::::::::Logout section end:::::::::::::::::*/
     
     /*::::::::::::::::::::::::::::::::Profile section end:::::::::::::::::::::::::::::::::::::::*/

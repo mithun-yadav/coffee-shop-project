@@ -111,10 +111,10 @@ function reRenderDocs() {
     userInfo.insertAdjacentHTML(
       "afterbegin",
       `
-        <p>${temproryDataStoreLocal.firstName} ${temproryDataStoreLocal.lastName}</p>
+        <p><span class="info-icons"><i class="fa-solid fa-user"></i></span>${temproryDataStoreLocal.firstName} ${temproryDataStoreLocal.lastName}</p>
         <div class="more-user-info">
-        <p>${temproryDataStoreLocal.username}</p>
-        <p>${temproryDataStoreLocal.email}</p>
+        <p><span class="info-icons"><i class="fa-solid fa-phone"></i></span>${temproryDataStoreLocal.username}</p>
+        <p><span class="info-icons"><i class="fa-solid fa-envelope"></i></span>${temproryDataStoreLocal.email}</p>
         </div>
     `
     );
