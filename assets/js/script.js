@@ -14,7 +14,6 @@ function reRenderDocs() {
   const otpSubmitForm = document.querySelector(".otp-submit-form");
   const otpInput = document.querySelector("#otp-input");
   const otpNotValidMessage = document.querySelector(".otpNotValidMessage");
-  const successfulLoginDiv = document.querySelector(".successful-login-div");
   const userInfo = document.querySelector(".userInfo");
   const loginSignupDiv = document.querySelector(".login-signup-div");
   const logoutConfirm  = document.querySelector(".logout-confirm ");
@@ -22,6 +21,9 @@ function reRenderDocs() {
   const generateQrBtn  = document.querySelector(".generate-qr-btn");
   const barcodeDiv = document.querySelector(".barcode-div");
   const showPointsSpan = document.querySelector(".show-points span");
+  const qrCodeDiv  = document.querySelector(".qr-code-div");
+  const mobileInvalid  = document.querySelector(".mobile-invalid");
+
 
 
   const phoneSignin = document.querySelector("#phone-signin");
@@ -76,7 +78,6 @@ function reRenderDocs() {
 
 
   function generateQRFunc(qrCodeString){
-    const qrCodeDiv  = document.querySelector(".qr-code-div");
       var qrCode = new QRCode(qrCodeDiv, {
           text: qrCodeString,
           width: 256,
@@ -86,7 +87,7 @@ function reRenderDocs() {
           correctLevel : QRCode.CorrectLevel.H
       });
 
-      console.log(qrCodeString);
+      console.log(qrCodeString,"ccccccc");
   }
 
   generateQrBtn.addEventListener("click",()=>{
@@ -94,6 +95,11 @@ function reRenderDocs() {
     console.log(phoneNumberValue)
     fetchData("generateBarcode", phoneNumberValue).then((res) => {
       console.log(phoneNumberValue);
+      let qrString = res["return_data"][0]["random_barcode"];
+      localStorage.setItem("qrCodeString",qrString);
+      qrCodeDiv.innerHTML="";
+      generateQRFunc(qrCodeString);
+      console.log("zzzzzz")
       //let qrString = res["return_data"][0]["random_barcode"];
       // localStorage.setItem("qrCodeString",qrString);
       // localStorage.getItem("qrCodeString") && generateQRFunc(qrString);
@@ -128,8 +134,9 @@ function reRenderDocs() {
       userInfo.classList.remove("noDisplay");
       userInfoFunc();
       barcodeDiv.classList.remove("noDisplay");
-    } else {
       logoutBtn.classList.remove("noDisplay");
+    } else {
+      logoutBtn.classList.add("noDisplay");
     }
   }
 
@@ -145,8 +152,21 @@ function reRenderDocs() {
         localStorage.removeItem("userInfoLogin");
         localStorage.removeItem("bonusPoints");
         localStorage.removeItem("qrCodeString");
+        localStorage.removeItem("mobileNumberSet");
+
+        qrCodeDiv.innerHTML="";
+        showPointsSpan.innerHTML="";
         barcodeDiv.classList.add("noDisplay");
-        window.location.reload();
+        mobileNumberForm.classList.add("noDisplay");
+        otpSubmitForm.classList.add("noDisplay");
+        phoneSignin.value = "";
+        otpInput.value="";
+        logoutConfirm.classList.add("noDisplay");
+        loginSignupDiv.classList.remove("noDisplay");
+        userInfo.classList.add("noDisplay");
+        userInfo.innerHTML="";
+        logoutBtn.classList.add("noDisplay");
+
       }else{
         logoutConfirm.classList.add("noDisplay");
       }
@@ -154,8 +174,8 @@ function reRenderDocs() {
   })
 
   mobileNumberForm.addEventListener("submit", (e) => {
+    console.log("kkkkkk");
     e.preventDefault();
-    //console.log(phoneSignin.value, "=========");
     phoneNumberValue = phoneSignin.value;
     function temporaryFunction(res,) {
       const { return_data } = res;
@@ -171,14 +191,15 @@ function reRenderDocs() {
       localStorage.setItem("mobileNumberSet",phoneNumberValue);
     }
 
-    if (phoneNumberValue != "" && isFinite(phoneNumberValue)) {
-      //console.log(phoneNumberValue);
-      submitPhoneBtn.disabled = false;
+    if (phoneNumberValue != "" && phoneNumberValue.length === 10 && isFinite(phoneNumberValue)) {
+      console.log(phoneNumberValue);
+      // submitPhoneBtn.disabled = false;
       fetchData("userLoginWithUsername", phoneNumberValue).then((res) => {
         temporaryFunction(res,phoneNumberValue);
       });
     } else {
-      submitPhoneBtn.disabled = true;
+      // submitPhoneBtn.disabled = true;
+      mobileInvalid.classList.add("noDisplay");
     }
   });
 
@@ -196,8 +217,10 @@ function reRenderDocs() {
         loginSignupDiv.classList.add("noDisplay");
         userInfo.classList.remove("noDisplay");
         barcodeDiv.classList.remove("noDisplay");
+        userInfo.innerHTML="";
 
         userInfoFunc();
+        logoutBtn.classList.remove("noDisplay");
         // window.location.reload();
       });
     } else {

@@ -536,21 +536,21 @@ footer{
         font-weight: bold;
         color: var(--primaryColor);
     }
-    .close-mobile-form{
-        width: 30px;
-        height: 30px;
+    .close-mobile-form {
+        width: 45px;
+        height: 45px;
         color: #fff;
-        background-color: var(--primaryColor);
+        background-color: coral;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 50%;
+        /* border-radius: 50%; */
     }
     .close-mobile-form-div {
         justify-content: end;
         position: absolute;
-        top: 1rem;
-        right: 1rem;
+        top: 10px;
+        right: 10px;
     }
 
     #otp-input {
@@ -575,7 +575,7 @@ footer{
     .userInfo {
         padding: 1rem;
         margin: 0 auto;
-        width: 80%;
+        width: 95%;
         margin: auto;
         text-align: center;
     }
@@ -614,13 +614,14 @@ footer{
         justify-content: center;
         align-items: center;
     }
-    .generate-qr-btn button{
-        padding: 16px 30px;
+    .generate-qr-btn button {
+        padding: 10px 20px;
         outline: none;
         border: none;
         background-color: coral;
         color: #fff;
         margin-top: 10px;
+        font-size: 19px;
     }
     .info-icons{
         display: inline-block;
@@ -632,7 +633,7 @@ footer{
     }
     /*:::::::::::::Logout section start:::::::::::::::::*/
     .logout-confirm{
-        position: absolute;
+        position: fixed;
         inset: 0;
         display: flex;
         align-items: center;
@@ -681,6 +682,9 @@ footer{
         font-weight: bold;
         margin-left: 6px;
         font-size: 20px;
+    }
+    .mobile-invalid{
+        text-align: center;
     }
 
     /*:::::::::::::Logout section end:::::::::::::::::*/
