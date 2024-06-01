@@ -21,6 +21,11 @@ function reRenderDocs() {
   const logoutConfirmBtns  = document.querySelectorAll(".confirm-logout-btns button");
   const generateQrBtn  = document.querySelector(".generate-qr-btn");
   const barcodeDiv = document.querySelector(".barcode-div");
+  const showPointsSpan = document.querySelector(".show-points span");
+
+
+  const phoneSignin = document.querySelector("#phone-signin");
+
 
   langListLi.forEach((item, index) => {
     item.addEventListener("click", () => {
@@ -85,12 +90,14 @@ function reRenderDocs() {
   }
 
   generateQrBtn.addEventListener("click",()=>{
+    phoneNumberValue = localStorage.getItem("mobileNumberSet");
+    console.log(phoneNumberValue)
     fetchData("generateBarcode", phoneNumberValue).then((res) => {
       console.log(phoneNumberValue);
       //let qrString = res["return_data"][0]["random_barcode"];
       // localStorage.setItem("qrCodeString",qrString);
       // localStorage.getItem("qrCodeString") && generateQRFunc(qrString);
-      console.log(qrString);
+      console.log(res);
       barcodeDiv.classList.remove("noDisplay");
     });
   })
@@ -99,6 +106,8 @@ function reRenderDocs() {
     temproryDataStoreLocal = JSON.parse(
       localStorage.getItem("userInfoLogin")
     );
+
+    getBonousPoints = localStorage.getItem("bonusPoints");
     userInfo.insertAdjacentHTML(
       "afterbegin",
       `
@@ -106,10 +115,10 @@ function reRenderDocs() {
         <div class="more-user-info">
         <p>${temproryDataStoreLocal.username}</p>
         <p>${temproryDataStoreLocal.email}</p>
-        <p>${getBonousPoints}</p>
         </div>
     `
     );
+    showPointsSpan.innerText=`${getBonousPoints}`;
   }
 
   function checkLocalStorage() {
@@ -146,27 +155,27 @@ function reRenderDocs() {
 
   mobileNumberForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    const phoneSignin = document.querySelector("#phone-signin");
     //console.log(phoneSignin.value, "=========");
     phoneNumberValue = phoneSignin.value;
-    function temporaryFunction(res) {
+    function temporaryFunction(res,) {
       const { return_data } = res;
-      console.log("OTP",return_data[0].otp);
-      (temproryOtp = return_data[0].otp),
-        (temproryDataStore = {
+      temproryOtp = return_data[0].otp;
+      console.log("OTP",temproryOtp);
+        temproryDataStore = {
           username: return_data[0].username,
           firstName: return_data[0].first_name,
           lastName: return_data[0].last_name,
           email: return_data[0].email,
-        });
+        };
       otpSubmitForm.classList.toggle("noDisplay");
+      localStorage.setItem("mobileNumberSet",phoneNumberValue);
     }
 
     if (phoneNumberValue != "" && isFinite(phoneNumberValue)) {
       //console.log(phoneNumberValue);
       submitPhoneBtn.disabled = false;
       fetchData("userLoginWithUsername", phoneNumberValue).then((res) => {
-        temporaryFunction(res);
+        temporaryFunction(res,phoneNumberValue);
       });
     } else {
       submitPhoneBtn.disabled = true;
