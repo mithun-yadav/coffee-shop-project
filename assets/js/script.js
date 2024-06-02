@@ -75,7 +75,9 @@ function reRenderDocs() {
 
 
   function generateQRFunc(qrCodeString){
-      var qrCode = new QRCode(qrCodeDiv, {
+    qrCodeString = localStorage.getItem("qrCodeString");
+    console.log(qrCodeString,"developing test");
+      new QRCode(qrCodeDiv, {
           text: qrCodeString,
           width: 256,
           height: 256,
@@ -96,7 +98,6 @@ function reRenderDocs() {
       localStorage.setItem("qrCodeString",qrString);
       qrCodeDiv.innerHTML="";
       generateQRFunc(qrCodeString);
-      console.log("zzzzzz")
       //let qrString = res["return_data"][0]["random_barcode"];
       // localStorage.setItem("qrCodeString",qrString);
       // localStorage.getItem("qrCodeString") && generateQRFunc(qrString);
@@ -171,7 +172,6 @@ function reRenderDocs() {
   })
 
   mobileNumberForm.addEventListener("submit", (e) => {
-    console.log("kkkkkk");
     e.preventDefault();
     phoneNumberValue = phoneSignin.value;
     function temporaryFunction(res,) {
