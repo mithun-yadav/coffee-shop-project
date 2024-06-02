@@ -23,12 +23,8 @@ function reRenderDocs() {
   const showPointsSpan = document.querySelector(".show-points span");
   const qrCodeDiv  = document.querySelector(".qr-code-div");
   const mobileInvalid  = document.querySelector(".mobile-invalid");
-  const spinnerLoader  = document.querySelector(".spinner");
-
-
 
   const phoneSignin = document.querySelector("#phone-signin");
-
 
   langListLi.forEach((item, index) => {
     item.addEventListener("click", () => {
@@ -254,8 +250,6 @@ function reRenderDocs() {
   // Function to fetch data from the API
 
   async function fetchData(diffEndPoints, diffType) {
-    spinnerLoader.classList.add("noData");
-
 
     const url = `https://app.doichaangcorporate.com/app/api/${diffEndPoints}`; // Replace this with your API endpoint
     const accessToken = "f58acd6bfd116ef3401808fc25220cb5"; // Your access token
@@ -285,13 +279,11 @@ function reRenderDocs() {
 
       // Parse the JSON response
       data = await response.json();
-      spinnerLoader.classList.remove("noData");
 
       // Do something with the data
       return data;
     } catch (error) {
       console.error("Error fetching data:", error);
-      spinnerLoader.classList.remove("noData");
     }
   }
 
@@ -712,3 +704,4 @@ function reRenderDocs() {
 
   /*::::::::::::::::::::::::::::::::Shop Section end:::::::::::::::::::::::::::::::::::::::*/
 }
+
