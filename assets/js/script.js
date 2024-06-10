@@ -16,15 +16,23 @@ function reRenderDocs() {
   const otpNotValidMessage = document.querySelector(".otpNotValidMessage");
   const userInfo = document.querySelector(".userInfo");
   const loginSignupDiv = document.querySelector(".login-signup-div");
-  const logoutConfirm  = document.querySelector(".logout-confirm ");
-  const logoutConfirmBtns  = document.querySelectorAll(".confirm-logout-btns button");
-  const generateQrBtn  = document.querySelector(".generate-qr-btn");
+  const logoutConfirm = document.querySelector(".logout-confirm ");
+  const logoutConfirmBtns = document.querySelectorAll(
+    ".confirm-logout-btns button"
+  );
+  const generateQrBtn = document.querySelector(".generate-qr-btn");
   const barcodeDiv = document.querySelector(".barcode-div");
   const showPointsSpan = document.querySelector(".show-points span");
-  const qrCodeDiv  = document.querySelector(".qr-code-div");
-  const mobileInvalid  = document.querySelector(".mobile-invalid");
-
+  const qrCodeDiv = document.querySelector(".qr-code-div");
+  const mobileInvalid = document.querySelector(".mobile-invalid");
   const phoneSignin = document.querySelector("#phone-signin");
+  const signupBtn = document.querySelector(".signup-btn");
+  const signUpSection = document.querySelector(".sign-up-section");
+  const signUpBackBtn = document.querySelector(".sign-up-back-btn");
+  const signUpForm = document.querySelector(".sign-up-form");
+  const signUpFormBtn = document.querySelector(".sign-up-form button");
+  const signUpPhone = document.querySelector(".signUp-phone");
+  const userExist = document.querySelector(".userExist");
 
   langListLi.forEach((item, index) => {
     item.addEventListener("click", () => {
@@ -63,6 +71,7 @@ function reRenderDocs() {
   let temproryDataStore = {};
   let temproryOtp = "";
   let phoneNumberValue = "";
+  // let phoneNumberSignUp = ""
   let temproryDataStoreLocal = JSON.parse(
     localStorage.getItem("userInfoLogin")
   );
@@ -73,30 +82,29 @@ function reRenderDocs() {
   qrCodeString && generateQRFunc(qrCodeString);
   console.log(qrCodeString);
 
-
-  function generateQRFunc(qrCodeString){
+  function generateQRFunc(qrCodeString) {
     qrCodeString = localStorage.getItem("qrCodeString");
-    console.log(qrCodeString,"developing test");
-      new QRCode(qrCodeDiv, {
-          text: qrCodeString,
-          width: 256,
-          height: 256,
-          colorDark : "#000000",
-          colorLight : "#ffffff",
-          correctLevel : QRCode.CorrectLevel.H
-      });
+    console.log(qrCodeString, "developing test");
+    new QRCode(qrCodeDiv, {
+      text: qrCodeString,
+      width: 256,
+      height: 256,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H,
+    });
 
-      console.log(qrCodeString,"ccccccc");
+    console.log(qrCodeString, "ccccccc");
   }
 
-  generateQrBtn.addEventListener("click",()=>{
+  generateQrBtn.addEventListener("click", () => {
     phoneNumberValue = localStorage.getItem("mobileNumberSet");
-    console.log(phoneNumberValue)
+    console.log(phoneNumberValue);
     fetchData("generateBarcode", phoneNumberValue).then((res) => {
       console.log(phoneNumberValue);
       let qrString = res["return_data"][0]["random_barcode"];
-      localStorage.setItem("qrCodeString",qrString);
-      qrCodeDiv.innerHTML="";
+      localStorage.setItem("qrCodeString", qrString);
+      qrCodeDiv.innerHTML = "";
       generateQRFunc(qrCodeString);
       //let qrString = res["return_data"][0]["random_barcode"];
       // localStorage.setItem("qrCodeString",qrString);
@@ -104,12 +112,10 @@ function reRenderDocs() {
       console.log(res);
       barcodeDiv.classList.remove("noDisplay");
     });
-  })
+  });
 
-  function userInfoFunc(){
-    temproryDataStoreLocal = JSON.parse(
-      localStorage.getItem("userInfoLogin")
-    );
+  function userInfoFunc() {
+    temproryDataStoreLocal = JSON.parse(localStorage.getItem("userInfoLogin"));
 
     getBonousPoints = localStorage.getItem("bonusPoints");
     userInfo.insertAdjacentHTML(
@@ -122,7 +128,7 @@ function reRenderDocs() {
         </div>
     `
     );
-    showPointsSpan.innerText=`${getBonousPoints}`;
+    showPointsSpan.innerText = `${getBonousPoints}`;
   }
 
   function checkLocalStorage() {
@@ -138,61 +144,64 @@ function reRenderDocs() {
     }
   }
 
-
   logoutBtn.addEventListener("click", () => {
     logoutConfirm.classList.remove("noDisplay");
   });
 
-  logoutConfirmBtns.forEach((item)=>{
-    item.addEventListener("click",()=>{
+  logoutConfirmBtns.forEach((item) => {
+    item.addEventListener("click", () => {
       console.log(item.dataset.logout);
-      if(item.dataset.logout == "yes"){
+      if (item.dataset.logout == "yes") {
         localStorage.removeItem("userInfoLogin");
         localStorage.removeItem("bonusPoints");
         localStorage.removeItem("qrCodeString");
         localStorage.removeItem("mobileNumberSet");
 
-        qrCodeDiv.innerHTML="";
-        showPointsSpan.innerHTML="";
+        qrCodeDiv.innerHTML = "";
+        showPointsSpan.innerHTML = "";
         barcodeDiv.classList.add("noDisplay");
         mobileNumberForm.classList.add("noDisplay");
         otpSubmitForm.classList.add("noDisplay");
         phoneSignin.value = "";
-        otpInput.value="";
+        otpInput.value = "";
         logoutConfirm.classList.add("noDisplay");
         loginSignupDiv.classList.remove("noDisplay");
         userInfo.classList.add("noDisplay");
-        userInfo.innerHTML="";
+        userInfo.innerHTML = "";
         logoutBtn.classList.add("noDisplay");
-
-      }else{
+      } else {
         logoutConfirm.classList.add("noDisplay");
       }
-    })
-  })
+    });
+  });
 
   mobileNumberForm.addEventListener("submit", (e) => {
     e.preventDefault();
     phoneNumberValue = phoneSignin.value;
-    function temporaryFunction(res,) {
+    function temporaryFunction(res) {
+      console.log(res);
       const { return_data } = res;
       temproryOtp = return_data[0].otp;
-      console.log("OTP",temproryOtp);
-        temproryDataStore = {
-          username: return_data[0].username,
-          firstName: return_data[0].first_name,
-          lastName: return_data[0].last_name,
-          email: return_data[0].email,
-        };
+      console.log("OTP", temproryOtp);
+      temproryDataStore = {
+        username: return_data[0].username,
+        firstName: return_data[0].first_name,
+        lastName: return_data[0].last_name,
+        email: return_data[0].email,
+      };
       otpSubmitForm.classList.toggle("noDisplay");
-      localStorage.setItem("mobileNumberSet",phoneNumberValue);
+      localStorage.setItem("mobileNumberSet", phoneNumberValue);
     }
 
-    if (phoneNumberValue != "" && phoneNumberValue.length === 10 && isFinite(phoneNumberValue)) {
+    if (
+      phoneNumberValue != "" &&
+      phoneNumberValue.length === 10 &&
+      isFinite(phoneNumberValue)
+    ) {
       console.log(phoneNumberValue);
       // submitPhoneBtn.disabled = false;
       fetchData("userLoginWithUsername", phoneNumberValue).then((res) => {
-        temporaryFunction(res,phoneNumberValue);
+        temporaryFunction(res, phoneNumberValue);
       });
     } else {
       // submitPhoneBtn.disabled = true;
@@ -206,15 +215,15 @@ function reRenderDocs() {
       //console.log(phoneNumberValue);
       fetchData("generateBarcode", phoneNumberValue).then((res) => {
         console.log(res);
-        console.log(res["return_data"][0]["random_barcode"],"barcode");
+        console.log(res["return_data"][0]["random_barcode"], "barcode");
         let qrString = res["return_data"][0]["random_barcode"];
-        localStorage.setItem("bonusPoints",res.return_data[0].bonus);
-        localStorage.setItem("qrCodeString",qrString);
+        localStorage.setItem("bonusPoints", res.return_data[0].bonus);
+        localStorage.setItem("qrCodeString", qrString);
         userInfoShow(qrString);
         loginSignupDiv.classList.add("noDisplay");
         userInfo.classList.remove("noDisplay");
         barcodeDiv.classList.remove("noDisplay");
-        userInfo.innerHTML="";
+        userInfo.innerHTML = "";
 
         userInfoFunc();
         logoutBtn.classList.remove("noDisplay");
@@ -232,7 +241,6 @@ function reRenderDocs() {
     otpSubmitForm.classList.add("noDisplay");
     mobileNumberForm.classList.add("noDisplay");
     generateQRFunc(qrString);
-    
   }
 
   loginBtn.addEventListener("click", () => {
@@ -243,18 +251,105 @@ function reRenderDocs() {
     mobileNumberForm.classList.toggle("noDisplay");
   });
 
+  /*::::::::::::::::::::::Sign Up start:::::::::::::::::::::::::: */
+  function validatePhoneNumber() {
+    // Get and trim phone number input
+    const phoneNumber = signUpPhone.value.trim();
+
+    // Regex pattern for 10-digit phone number
+    const pattern = /^\d{10}$/;
+
+    // Validate phone number and update message
+    const isValid = pattern.test(phoneNumber);
+    document.getElementById("phoneValidationMsg").textContent = isValid
+      ? ""
+      : "Please enter a valid 10-digit phone number.";
+
+    if (!isValid) {
+      signUpFormBtn.disabled = true;
+    } else {
+      signUpFormBtn.disabled = false;
+    }
+    // Return validation status
+    return isValid;
+  }
+
+  let formEl = document.forms.BookPackageForm;
+  var formData = new FormData(formEl);
+  var name = formData.get("firstname");
+  // var name = formData.get('la');
+  // var name = formData.get('firstname');
+  // var name = formData.get('firstname');
+  console.log(name);
+
+  function handleSignUpFunction(res) {
+    if (res.return_status == "success") {
+      console.log(res);
+      console.log(res.return_data[0].otp);
+      let registerData = res?.return_data[0];
+      temproryOtp = registerData.otp;
+      phoneNumberValue = registerData.tel_no;
+      phoneNumberValue = "0802211925";
+      signUpSection.classList.add("noDisplay");
+      otpSubmitForm.classList.remove("noDisplay");
+      signUpForm.reset();
+    } else {
+      console.log(res);
+      userExist.classList.remove("noDisplay");
+    }
+  }
+
+  signUpPhone.addEventListener("keyup", validatePhoneNumber);
+
+  signupBtn.addEventListener("click", (e) => {
+    signUpSection.classList.remove("noDisplay");
+  });
+
+  signUpBackBtn.addEventListener("click", (e) => {
+    signUpSection.classList.add("noDisplay");
+    signUpForm.reset();
+  });
+
+  signUpForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    //console.log(e.target);
+    let formEl = document.forms.BookPackageForm;
+    let formData = new FormData(formEl);
+    let firstname = formData.get("firstname");
+    let lastname = formData.get("lastname");
+    let email = formData.get("email");
+    let phone = formData.get("phone");
+    let dob = "01-Jan-1990";
+    console.log(firstname, lastname, email, phone, dob);
+    fetchData("saveUser", "", firstname, lastname, email, phone, dob).then(
+      (res) => {
+        handleSignUpFunction(res);
+      }
+    );
+  });
+  /*:::::::::::::::::::::::::Sign Up end::::::::::::::::::::::: */
+
   const urlParams = new URLSearchParams(window.location.search);
 
   const paramValue = urlParams.get("module");
 
   // Function to fetch data from the API
 
-  async function fetchData(diffEndPoints, diffType) {
+  async function fetchData(
+    diffEndPoints,
+    diffType = "",
+    firstname = "",
+    lastname = "",
+    email = "",
+    phone = "",
+    dob = ""
+  ) {
+    console.log(firstname, lastname, email, phone, dob);
 
     const url = `https://app.doichaangcorporate.com/app/api/${diffEndPoints}`; // Replace this with your API endpoint
     const accessToken = "f58acd6bfd116ef3401808fc25220cb5"; // Your access token
     const app_version = "1.0.0"; // Your API version
-    const type = "news"; // Your type
+    // const type = "news"; // Your type
 
     // Create a new FormData object
     const formData = new FormData();
@@ -262,6 +357,11 @@ function reRenderDocs() {
     formData.append("app_version", app_version);
     formData.append("category_type", diffType);
     formData.append("username", diffType);
+    formData.append("first_name", firstname);
+    formData.append("last_name", lastname);
+    formData.append("email", email);
+    formData.append("mobile", phone);
+    formData.append("birth_data", dob);
 
     let data = undefined;
 
@@ -704,4 +804,3 @@ function reRenderDocs() {
 
   /*::::::::::::::::::::::::::::::::Shop Section end:::::::::::::::::::::::::::::::::::::::*/
 }
-

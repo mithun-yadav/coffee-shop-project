@@ -96,16 +96,34 @@
                     </div>
                 </div>
             </form>
-
             <!--Validate OTP end-->
+            <!--Signup form start-->
+            <div class="sign-up-section noDisplay">
+                <div class="sign-up-back-btn"><i class="fa-solid fa-arrow-left-long"></i></div>
+                <div class="sign-up-form-div">
+                    <form action="#" class="sign-up-form" id="BookPackageForm">
+                        <input type="text" placeholder="Firstname" name="firstname" required>
+                        <input type="text" placeholder="Lastname" name="lastname" required>
+                        <input type="email" placeholder="Email" name="email" required>
+                        <input type="number" placeholder="Phonen Number" name="phone" class="signUp-phone" required>
+
+                        <button type="submit" disabled>Register</button>
+                        <div id="phoneValidationMsg"></div>
+                        <div class="userExist noDisplay">User already exists. Please login.</div>
+                    </form>
+                </div>
+            </div>
+            <!--Signup form start-->
             <div class="select-lang-div">
                 <ul class="lang-list">
                     <li>
-                        <label for="f-option">English</label>
+                        <input type="radio" name="lang" id="english">
+                        <label for="english">English</label>
                     </li>
 
                     <li>
-                        <label for="s-option">ไทย</label>
+                        <input type="radio" name="lang" id="thai">
+                        <label for="thai">ไทย</label>
                     </li>
                 </ul>
             </div>
