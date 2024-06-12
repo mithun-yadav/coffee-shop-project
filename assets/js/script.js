@@ -293,11 +293,22 @@ function reRenderDocs() {
       ? ""
       : "Please enter a valid 10-digit phone number.";
 
-    if (!isValid) {
-      signUpFormBtn.disabled = true;
-    } else {
-      signUpFormBtn.disabled = false;
-    }
+    // if (!isValid) {
+    //   signUpFormBtn.disabled = true;
+    // } else {
+    //   signUpFormBtn.disabled = false;
+    // }
+
+    // signUpFormInput.forEach((input)=>{
+    // if(!input.checkValidity() && isValid){
+    //   console.log("valid")
+    //   signUpFormBtn.disabled = true;
+    // }
+    // else{
+    //   console.log("invalid")
+    //   signUpFormBtn.disabled = false;
+    // }
+    // })
     // Return validation status
     return isValid;
   }
