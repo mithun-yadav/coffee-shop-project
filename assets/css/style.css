@@ -665,6 +665,7 @@ input[type="radio"]:checked ~ label {
 }
 .mobile-invalid {
   text-align: center;
+  color:red;
 }
 
 /*:::::::::::::Logout section end:::::::::::::::::*/
@@ -726,6 +727,15 @@ input[type="radio"]:checked ~ label {
 .userExist{
     color: red;
 }
+#phoneValidationMsg{
+  color: red;
+}
+.sign-up-form button[type="submit"]:disabled{
+  background-color: grey;
+}
+/* .mobileNum-err{
+  color:red;
+} */
 /*:::::::::::::Signup section end:::::::::::::::::*/
 
 /*::::::::::::::::::::::::::::::::Profile section end:::::::::::::::::::::::::::::::::::::::*/

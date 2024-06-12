@@ -30,9 +30,14 @@ function reRenderDocs() {
   const signUpSection = document.querySelector(".sign-up-section");
   const signUpBackBtn = document.querySelector(".sign-up-back-btn");
   const signUpForm = document.querySelector(".sign-up-form");
+  const signUpFormInput = document.querySelectorAll(".sign-up-form input");
   const signUpFormBtn = document.querySelector(".sign-up-form button");
   const signUpPhone = document.querySelector(".signUp-phone");
   const userExist = document.querySelector(".userExist");
+  const signinModelDivInput = document.querySelectorAll(".signin-model-div input");
+  const mobileNumErr = document.querySelector(".mobileNum-err");
+
+  let signUpOtpForm = false;
 
   langListLi.forEach((item, index) => {
     item.addEventListener("click", () => {
@@ -175,6 +180,16 @@ function reRenderDocs() {
     });
   });
 
+  /*:::::::::::::::::::::::::::::mobile number form start:::::::::::::::::::::::::::::::::: */
+  signinModelDivInput.forEach((item)=>{
+    item.addEventListener("keyup",(e)=>{
+      console.log("change");
+      if(e.target.value ==""){
+        mobileInvalid.classList.add("noDisplay");
+      }
+    })
+  });
+  
   mobileNumberForm.addEventListener("submit", (e) => {
     e.preventDefault();
     phoneNumberValue = phoneSignin.value;
@@ -192,7 +207,7 @@ function reRenderDocs() {
       otpSubmitForm.classList.toggle("noDisplay");
       localStorage.setItem("mobileNumberSet", phoneNumberValue);
     }
-
+    
     if (
       phoneNumberValue != "" &&
       phoneNumberValue.length === 10 &&
@@ -201,24 +216,37 @@ function reRenderDocs() {
       console.log(phoneNumberValue);
       // submitPhoneBtn.disabled = false;
       fetchData("userLoginWithUsername", phoneNumberValue).then((res) => {
+        console.log(res);
         temporaryFunction(res, phoneNumberValue);
       });
     } else {
       // submitPhoneBtn.disabled = true;
-      mobileInvalid.classList.add("noDisplay");
+      mobileInvalid.classList.remove("noDisplay");
     }
   });
 
-  otpSubmitForm.addEventListener("submit", () => {
+  signinModelDivInput.forEach((item)=>{
+    item.addEventListener("keyup",(e)=>{
+      console.log("change");
+      if(e.target.value ==""){
+        otpNotValidMessage.classList.add("noDisplay");
+      }
+    })
+  });
+  
+  /*:::::::::::::::::::::::::::::::mobile number form end:::::::::::::::::::::::::::::::: */
+  otpSubmitForm.addEventListener("submit", (e) => {
+    e.preventDefault();
     if (temproryOtp == otpInput.value) {
       otpNotValidMessage.classList.add("noDisplay");
-      //console.log(phoneNumberValue);
+      console.log(phoneNumberValue);
       fetchData("generateBarcode", phoneNumberValue).then((res) => {
         console.log(res);
         console.log(res["return_data"][0]["random_barcode"], "barcode");
         let qrString = res["return_data"][0]["random_barcode"];
         localStorage.setItem("bonusPoints", res.return_data[0].bonus);
         localStorage.setItem("qrCodeString", qrString);
+
         userInfoShow(qrString);
         loginSignupDiv.classList.add("noDisplay");
         userInfo.classList.remove("noDisplay");
@@ -282,19 +310,46 @@ function reRenderDocs() {
   // var name = formData.get('firstname');
   console.log(name);
 
+  signUpFormInput.forEach((item)=>{
+    item.addEventListener("keyup",(e)=>{
+      console.log("change");
+      if(e.target.value !==""){
+        userExist.classList.add("noDisplay");
+      }
+    })
+  });
+
   function handleSignUpFunction(res) {
     if (res.return_status == "success") {
       console.log(res);
       console.log(res.return_data[0].otp);
+      signUpForm.reset();
       let registerData = res?.return_data[0];
       temproryOtp = registerData.otp;
       phoneNumberValue = registerData.tel_no;
-      phoneNumberValue = "0802211925";
+      if(phoneNumberValue == "0802211925"){
+        phoneNumberValue ="0802211925";
+        localStorage.setItem("mobileNumberSet", phoneNumberValue);
+      }
+      else{
+        phoneNumberValue ="0802211925";
+        localStorage.setItem("mobileNumberSet", "0802211925");
+      }
+
+      temproryDataStore = {
+        username: res.return_data[0].username,
+        firstName: res.return_data[0].first_name,
+        lastName: res.return_data[0].last_name,
+        email: res.return_data[0].email,
+      };
+      localStorage.setItem("userInfoLogin", JSON.stringify(temproryDataStore));
+
       signUpSection.classList.add("noDisplay");
       otpSubmitForm.classList.remove("noDisplay");
       signUpForm.reset();
     } else {
       console.log(res);
+      signUpForm.reset();
       userExist.classList.remove("noDisplay");
     }
   }
@@ -309,6 +364,8 @@ function reRenderDocs() {
     signUpSection.classList.add("noDisplay");
     signUpForm.reset();
   });
+
+  
 
   signUpForm.addEventListener("submit", (e) => {
     e.preventDefault();
