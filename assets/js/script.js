@@ -157,10 +157,7 @@ function reRenderDocs() {
     item.addEventListener("click", () => {
       console.log(item.dataset.logout);
       if (item.dataset.logout == "yes") {
-        localStorage.removeItem("userInfoLogin");
-        localStorage.removeItem("bonusPoints");
-        localStorage.removeItem("qrCodeString");
-        localStorage.removeItem("mobileNumberSet");
+        localStorage.clear();
 
         qrCodeDiv.innerHTML = "";
         showPointsSpan.innerHTML = "";
@@ -293,11 +290,11 @@ function reRenderDocs() {
       ? ""
       : "Please enter a valid 10-digit phone number.";
 
-    // if (!isValid) {
-    //   signUpFormBtn.disabled = true;
-    // } else {
-    //   signUpFormBtn.disabled = false;
-    // }
+    if (!isValid) {
+      signUpFormBtn.disabled = true;
+    } else {
+      signUpFormBtn.disabled = false;
+    }
 
     // signUpFormInput.forEach((input)=>{
     // if(!input.checkValidity() && isValid){
@@ -332,14 +329,12 @@ function reRenderDocs() {
 
   function handleSignUpFunction(res) {
     if (res.return_status == "success") {
-      console.log(res);
-      console.log(res.return_data[0].otp);
       signUpForm.reset();
       let registerData = res?.return_data[0];
       temproryOtp = registerData.otp;
       phoneNumberValue = registerData.tel_no;
       if(phoneNumberValue == "0802211925"){
-        phoneNumberValue ="0802211925";
+        phoneNumberValue = "0802211925";
         localStorage.setItem("mobileNumberSet", phoneNumberValue);
       }
       else{

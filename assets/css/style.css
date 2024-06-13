@@ -64,7 +64,7 @@ main section {
 }
 
 #home {
-  margin: 80px 0;
+  margin: 80px 0 0 0;
 }
 
 /*::::::::::::::::::::::::::::::::News Section start:::::::::::::::::::::::::::::::::::::::*/
@@ -729,9 +729,6 @@ input[type="radio"]:checked ~ label {
 }
 #phoneValidationMsg{
   color: red;
-}
-.sign-up-form button[type="submit"]:disabled{
-  background-color: grey;
 }
 /* .mobileNum-err{
   color:red;
