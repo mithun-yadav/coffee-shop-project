@@ -46,48 +46,22 @@ function reRenderDocs() {
     languageSelected = localStorage.getItem("languageSet");
   }
 
+  window.scrollTo({
+    top: 0,
+    left: 0,
+  });
+
 
   langListLi.forEach((item, index) => {
     item.addEventListener("click", () => {
       languageSelected =  item.textContent.trim();
       localStorage.setItem("languageSet",languageSelected);
-
-      if (item.textContent.trim() === "English") {
-        document.querySelectorAll(".th").forEach((item) => {
-          item.classList.remove("display");
-        });
-        document.querySelectorAll(".th").forEach((item, index) => {
-          item.classList.add("noDisplay");
-        });
-
-        document.querySelectorAll(".en").forEach((item) => {
-          item.classList.remove("noDisplay");
-        });
-        document.querySelectorAll(".en").forEach((item, index) => {
-          item.classList.add("display");
-        });
-      } else {
-        document.querySelectorAll(".en").forEach((item) => {
-          item.classList.remove("display");
-        });
-        document.querySelectorAll(".en").forEach((item, index) => {
-          item.classList.add("noDisplay");
-        });
-
-        document.querySelectorAll(".th").forEach((item) => {
-          item.classList.remove("noDisplay");
-        });
-        document.querySelectorAll(".th").forEach((item, index) => {
-          item.classList.add("display");
-        });
-      }
     });
   });
 
   let temproryDataStore = {};
   let temproryOtp = "";
   let phoneNumberValue = "";
-  // let phoneNumberSignUp = ""
   let temproryDataStoreLocal = JSON.parse(
     localStorage.getItem("userInfoLogin")
   );
@@ -122,9 +96,6 @@ function reRenderDocs() {
       localStorage.setItem("qrCodeString", qrString);
       qrCodeDiv.innerHTML = "";
       generateQRFunc(qrCodeString);
-      //let qrString = res["return_data"][0]["random_barcode"];
-      // localStorage.setItem("qrCodeString",qrString);
-      // localStorage.getItem("qrCodeString") && generateQRFunc(qrString);
       console.log(res);
       barcodeDiv.classList.remove("noDisplay");
     });
@@ -222,13 +193,11 @@ function reRenderDocs() {
       isFinite(phoneNumberValue)
     ) {
       console.log(phoneNumberValue);
-      // submitPhoneBtn.disabled = false;
       fetchData("userLoginWithUsername", phoneNumberValue).then((res) => {
         console.log(res);
         temporaryFunction(res, phoneNumberValue);
       });
     } else {
-      // submitPhoneBtn.disabled = true;
       mobileInvalid.classList.remove("noDisplay");
     }
   });
@@ -246,6 +215,7 @@ function reRenderDocs() {
   otpSubmitForm.addEventListener("submit", (e) => {
     e.preventDefault();
     if (temproryOtp == otpInput.value) {
+      localStorage.setItem("userInfoLogin", JSON.stringify(temproryDataStore));
       otpNotValidMessage.classList.add("noDisplay");
       console.log(phoneNumberValue);
       fetchData("generateBarcode", phoneNumberValue).then((res) => {
@@ -306,27 +276,12 @@ function reRenderDocs() {
     } else {
       signUpFormBtn.disabled = false;
     }
-
-    // signUpFormInput.forEach((input)=>{
-    // if(!input.checkValidity() && isValid){
-    //   console.log("valid")
-    //   signUpFormBtn.disabled = true;
-    // }
-    // else{
-    //   console.log("invalid")
-    //   signUpFormBtn.disabled = false;
-    // }
-    // })
-    // Return validation status
     return isValid;
   }
 
   let formEl = document.forms.BookPackageForm;
   var formData = new FormData(formEl);
   var name = formData.get("firstname");
-  // var name = formData.get('la');
-  // var name = formData.get('firstname');
-  // var name = formData.get('firstname');
   console.log(name);
 
   signUpFormInput.forEach((item)=>{
@@ -339,6 +294,8 @@ function reRenderDocs() {
   });
 
   function handleSignUpFunction(res) {
+    console.log(res);
+    console.log(res.return_data.otp);
     if (res.return_status == "success") {
       signUpForm.reset();
       let registerData = res?.return_data[0];
@@ -363,8 +320,6 @@ function reRenderDocs() {
         lastName: res.return_data[0].last_name,
         email: res.return_data[0].email,
       };
-      localStorage.setItem("userInfoLogin", JSON.stringify(temproryDataStore));
-
       signUpSection.classList.add("noDisplay");
       otpSubmitForm.classList.remove("noDisplay");
       signUpForm.reset();
@@ -409,7 +364,8 @@ function reRenderDocs() {
 
   const urlParams = new URLSearchParams(window.location.search);
 
-  const paramValue = urlParams.get("module");
+  let paramValue = urlParams.get("module");
+  console.log(paramValue,"mmmmmmm")
 
   // Function to fetch data from the API
 
@@ -487,9 +443,17 @@ function reRenderDocs() {
 
   topHeader.addEventListener("click", (e) => {
     let tabName = e.target.innerText;
-    tabName == "NEWS"
-      ? document.documentElement.style.setProperty("--tabChangeAnime", "50%")
-      : document.documentElement.style.setProperty("--tabChangeAnime", "0");
+    // tabName == "NEWS"
+    //   ? document.documentElement.style.setProperty("--tabChangeAnime", "50%")
+    //   : 
+
+      if(tabName == "NEWS"){
+        document.documentElement.style.setProperty("--tabChangeAnime", "50%");
+      }
+      else{
+        document.documentElement.style.setProperty("--tabChangeAnime", "0");
+        promotionFetch()
+      }
 
     homeAllSection.forEach((item) => {
       item.style.display = "none";
@@ -499,10 +463,6 @@ function reRenderDocs() {
       `#${tabName.toLowerCase()}-section`
     );
     homeSelectedSection.style.display = "flex";
-    window.scrollTo({
-      top: 0,
-      left: 0,
-    });
   });
 
   /*:::::::::::::::::::::::::::::Home page end:::::::::::::::::::::::::::::::::::*/
@@ -544,7 +504,7 @@ function reRenderDocs() {
         newsSection.insertAdjacentHTML("beforeend", newsHtml);
       });
       contentProductFunc();
-      promotionFetch();
+      // promotionFetch();
     })
   );
 
@@ -553,6 +513,11 @@ function reRenderDocs() {
   /*:::::::::::::::::::::::::::::Promotion page start:::::::::::::::::::::::::::::::::::*/
 
   function promotionFetch() {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+    });
+
     const promotionsSection = document.querySelector("#promotions-section");
     fetchData("getProductDetail", "promotion").then((data) => {
       const { return_data } = data;
@@ -627,6 +592,35 @@ function reRenderDocs() {
     );
   });
 
+  /*::::::::::::::::::::::::::fetch on change start:::::::::::::::::::::::::: */
+  switch (paramValue) { //selectedFooterBtnName
+    case "menu":
+      paramValue = "menu";
+      console.log("jjj")
+      menuFetch();
+      document.querySelector(`#${paramValue}`).style.display = "block";
+      break;
+    case "profile":
+      paramValue = "profile";
+      document.querySelector(`#${paramValue}`).style.display = "block";
+      break;
+    case "shop":
+      paramValue = "shop";
+      shopFetch();
+      document.querySelector(`#${paramValue}`).style.display = "block";
+      break;
+    case "home":
+      paramValue = "home";
+      document.querySelector(`#${paramValue}`).style.display = "block";
+      break;
+    default:
+      paramValue = "home";
+      document.querySelector(`#${paramValue}`).style.display = "block";
+      break;
+  }
+  /*:::::::::::::::::::::::::fetch on change start::::::::::::::::::::::::::: */
+
+
   impFourSections.forEach((item) => {
     item.style.display = "none";
   });
@@ -678,16 +672,14 @@ function reRenderDocs() {
           `
           <div id="menuimgDiv${indexMain + 1}" class="menuimgDiv">
           <ul class="menuContainer-ul">` +
-          `<span class="en">${languageSelected == "English" ? itemMain.name_en : itemMain.name_th}</span><span class="th">${itemMain.name_th}</span>` +
+          `<span class="en">${languageSelected == "English" ? itemMain.name_en : itemMain.name_th}</span>` +
           itemMain.product_group
             .map((item, index) => {
               return `<li class="en" data-menulistcount='menuContainer${
                 indexMain + 1
               }${index + 1}'>${
-                item.name_en
-              }</li><li class="th" data-menulistcount='menuContainer${
-                indexMain + 1
-              }${index + 1}'>${item.name_th}</li>`;
+                languageSelected == "English" ? item.name_en : item.name_th
+              }</li>`;
             })
             .join(" ") +
           `</ul>
@@ -705,11 +697,9 @@ function reRenderDocs() {
                     return `
                             <div class="menuContainer-img">
                                 <img src="${item.icon_filename_url}" alt="img">
-                                <p class="beverage-name en">${item.name_en}</p>
-                                <p class="beverage-name th">${item.name_th}</p>
+                                <p class="beverage-name en">${languageSelected == "English" ? item.name_en : item.name_th}</p>
                                 <p class="beverage-description">
-                                  <span class="en">${item.description_en}</span>
-                                  <span class="th">${item.description_th}</span>
+                                  <span class="en">${languageSelected == "English" ? item.description_en : item.description_th}</span>
                                 </p>
                             </div>
                             `;
@@ -734,14 +724,6 @@ function reRenderDocs() {
         menuimgDiv[0].style.display = "grid";
 
         //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
-
-        document.querySelectorAll(".th").forEach((item, index) => {
-          item.classList.add("noDisplay");
-        });
-
-        document.querySelectorAll(".en").forEach((item, index) => {
-          item.classList.add("display");
-        });
 
         //:::::::::::::::::::::::::::::==========||||||||||||||||==========:::::::::::::::::::::::://
 
@@ -820,8 +802,6 @@ function reRenderDocs() {
         /*=========================|||||||||||||||||||=========================== */
       });
     });
-
-    shopFetch();
   }
 
   /*::::::::::::::::::::::::::::::::menu Section end:::::::::::::::::::::::::::::::::::::::*/
@@ -860,10 +840,8 @@ function reRenderDocs() {
       return_data.forEach((item, index) => {
         const newsHtml = `
             <div class="addreses-phoneNo-div first-info-div">
-            <h3 class="en">${item.name_en}</h3>
-            <h3 class="th">${item.name_th}</h3>
-            <p class="en">${item.full_address_en}</p>
-            <p class="th">${item.full_address_th}</p>
+            <h3 class="en">${languageSelected == "English" ? item.name_en : item.name_th}</h3>
+            <p class="en">${languageSelected == "English" ? item.full_address_en : item.full_address_th}</p>
             <div class="addreses-phoneNo">
                 <div class="mobileNo"><a href="tel:${item.tel_no}">${item.tel_no}</a></div>
                 <div class="shop-location"><a href="https://www.google.com/maps?q=${item.lat},${item.lon}" target="_blank"><i class="fa-solid fa-location-dot"></i></a></div>
@@ -874,9 +852,6 @@ function reRenderDocs() {
       });
 
       contentProductFunc();
-      document.querySelectorAll(".th").forEach((item, index) => {
-        item.classList.add("noDisplay");
-      });
     });
   }
 
