@@ -74,6 +74,7 @@ main section {
   /* height: 100px; */
   display: inline-block;
   margin: 3px;
+  cursor: pointer;
 }
 .scroll-image img {
   width: 100%;
@@ -107,6 +108,7 @@ main section {
 
 .menuContainer-img {
   max-width: 121px;
+  cursor: pointer;
 }
 
 .menuContainer-img img {
@@ -283,7 +285,7 @@ footer {
 
 #shop {
   padding: 0 10px;
-  margin-bottom: 80px;
+  margin-bottom: 80px 0 0 0;
 }
 
 .addreses-phoneNo-div {

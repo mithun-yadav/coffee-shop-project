@@ -38,9 +38,20 @@ function reRenderDocs() {
   const mobileNumErr = document.querySelector(".mobileNum-err");
 
   let signUpOtpForm = false;
+  let languageSelected;
+
+  if(!localStorage.getItem("languageSet")){
+    languageSelected = "English";
+  }else{
+    languageSelected = localStorage.getItem("languageSet");
+  }
+
 
   langListLi.forEach((item, index) => {
     item.addEventListener("click", () => {
+      languageSelected =  item.textContent.trim();
+      localStorage.setItem("languageSet",languageSelected);
+
       if (item.textContent.trim() === "English") {
         document.querySelectorAll(".th").forEach((item) => {
           item.classList.remove("display");
@@ -333,14 +344,18 @@ function reRenderDocs() {
       let registerData = res?.return_data[0];
       temproryOtp = registerData.otp;
       phoneNumberValue = registerData.tel_no;
+
+      /*::::::::::::::::::::::::::::This need to be changed start::::::::::::::::::::::::: */
+
       if(phoneNumberValue == "0802211925"){
-        phoneNumberValue = "0802211925";
         localStorage.setItem("mobileNumberSet", phoneNumberValue);
       }
       else{
         phoneNumberValue ="0802211925";
         localStorage.setItem("mobileNumberSet", "0802211925");
       }
+
+      /*::::::::::::::::::::::::::::This need to be changed end::::::::::::::::::::::::: */
 
       temproryDataStore = {
         username: res.return_data[0].username,
@@ -571,7 +586,6 @@ function reRenderDocs() {
       });
 
       contentProductFunc();
-      menuFetch();
     });
   }
 
@@ -645,6 +659,7 @@ function reRenderDocs() {
     let menuIds = undefined;
 
     fetchData("getProductDetail", "product").then((data) => {
+      console.log(languageSelected,"languageSelect");
       const { return_data } = data;
 
       return_data.forEach((itemMain, indexMain) => {
@@ -663,7 +678,7 @@ function reRenderDocs() {
           `
           <div id="menuimgDiv${indexMain + 1}" class="menuimgDiv">
           <ul class="menuContainer-ul">` +
-          `<span class="en">${itemMain.name_en}</span><span class="th">${itemMain.name_th}</span>` +
+          `<span class="en">${languageSelected == "English" ? itemMain.name_en : itemMain.name_th}</span><span class="th">${itemMain.name_th}</span>` +
           itemMain.product_group
             .map((item, index) => {
               return `<li class="en" data-menulistcount='menuContainer${
