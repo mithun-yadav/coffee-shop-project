@@ -15,7 +15,7 @@ Navigation
 Bottom Menu: Use the bottom menu to navigate between different sections of the website, including offers, menu, promotions, and shop branches.
 **URL Queries**: Alternatively, you can navigate directly to specific sections by passing queries in the URL. For example:
 ### Link of the site
-To visit the menu section: https://mithun-yadav.github.io/coffee-shop-project/?module=menu
+To visit the menu section: https://mithun-yadav.github.io/coffee-shop-project/?module=home
 
 Language Switch
 ### change language
