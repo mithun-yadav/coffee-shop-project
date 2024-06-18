@@ -364,9 +364,6 @@ function reRenderDocs() {
 
   const urlParams = new URLSearchParams(window.location.search);
 
-  let paramValue = urlParams.get("module");
-  console.log(paramValue,"mmmmmmm")
-
   // Function to fetch data from the API
 
   async function fetchData(
@@ -470,42 +467,51 @@ function reRenderDocs() {
   /*:::::::::::::::::::::::::::::News page start:::::::::::::::::::::::::::::::::::*/
 
   const newsSection = document.querySelector("#news-section");
+  let paramValue = urlParams.get("module");
+  console.log(paramValue,"mmmmmmm")
 
   document.addEventListener(
     "DOMContentLoaded",
-    fetchData("getProductDetail", "news").then((data) => {
-      const { return_data } = data;
-      const imageArray = return_data[0].product_group;
-
-      promotionLoaded = true;
-      imageArray.forEach((item, index) => {
-        const newsHtml = `
-                <section id="" class="contentdetailsSection" data-contentdetails="${
-                  index + 1
-                }">
-                    <img src="${
-                      item.icon_filename_url
-                    }" alt="img" class="mainSectionImg">
-
-                    <div class="detailsImgDesc">
-                      <p class="en">
-                        <span class="en">${
-                          item.product_item[0].description_en
-                        }</span><span class="th">${
-          item.product_item[0].description_th
-        }</span>
-                      </p>
-                      <img src="${
-                        item.product_item[0].icon_filename_url
-                      }" alt="ll">
-                    </div>  
-                </section>
-            `;
-        newsSection.insertAdjacentHTML("beforeend", newsHtml);
-      });
-      contentProductFunc();
-      // promotionFetch();
-    })
+    ()=>{
+      if(paramValue =="menu" || paramValue =="profile" || paramValue =="shop"){
+        return;
+      }
+      else{
+        fetchData("getProductDetail", "news").then((data) => {
+          const { return_data } = data;
+          console.log(return_data);
+          const imageArray = return_data[0].product_group;
+    
+          promotionLoaded = true;
+          imageArray.forEach((item, index) => {
+            const newsHtml = `
+                    <section id="" class="contentdetailsSection" data-contentdetails="${
+                      index + 1
+                    }">
+                        <img src="${
+                          item.icon_filename_url
+                        }" alt="img" class="mainSectionImg">
+    
+                        <div class="detailsImgDesc">
+                          <p class="en">
+                            <span class="en">${
+                              item.product_item[0].description_en
+                            }</span><span class="th">${
+              item.product_item[0].description_th
+            }</span>
+                          </p>
+                          <img src="${
+                            item.product_item[0].icon_filename_url
+                          }" alt="ll">
+                        </div>  
+                    </section>
+                `;
+            newsSection.insertAdjacentHTML("beforeend", newsHtml);
+          });
+          contentProductFunc();
+        });
+      }
+    }
   );
 
   /*:::::::::::::::::::::::::::::News page end:::::::::::::::::::::::::::::::::::*/
